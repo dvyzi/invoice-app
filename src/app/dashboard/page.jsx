@@ -3,6 +3,7 @@
 import Buttons from "@/components/buttons";
 import { ChevronDown, Check } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import Invoice from "./components/invoice";
 
 const FilterDropdown = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -89,23 +90,28 @@ const FilterDropdown = () => {
 
 const DashboardPage = () => {
     return (
-        <div className="flex justify-between items-center">
-            <div>
-                <h1 className="text-heading-m md:text-heading-l">Factures</h1>
-                <p className="text-heading-s text-gray-2">
-                    <span className="hidden md:inline">Il y a </span>
-                    7 factures
-                    <span className="hidden md:inline"> au total</span>
-                </p>
+        <>
+            <div className="flex flex-col gap-16">
+                <div className="flex justify-between items-center">
+                    <div className="flex flex-col gap-[6px]">
+                        <h1 className="text-heading-m md:text-heading-l">Factures</h1>
+                        <p className="text-heading-s-nobold text-gray-2">
+                            <span className="hidden md:inline">Il y a </span>
+                            7 factures
+                            <span className="hidden md:inline"> au total</span>
+                        </p>
+                    </div>
+                    <div className="flex items-center gap-4 md:gap-9">
+                        <FilterDropdown />
+                        <Buttons type="new-invoice">
+                            Nouvelle facture
+                        </Buttons>
+                        <Buttons type="new-invoice-mobile"/>
+                    </div>
+                </div>
+                <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre 2025" total="1,800.90" status="Payée" />
             </div>
-            <div className="flex items-center gap-4 md:gap-9">
-                <FilterDropdown />
-                <Buttons type="new-invoice">
-                    Nouvelle facture
-                </Buttons>
-                <Buttons type="new-invoice-mobile"/>
-            </div>
-        </div>
+        </>
     );
 };
 

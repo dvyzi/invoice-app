@@ -23,6 +23,8 @@ module.exports = {
         'gray-1': '#DFE3FA',
         'gray-2': '#888EB0',
         'gray-light': '#E4E7F7',
+        'green-1': '#33D69F',
+        'green-light': '#F5FDFA',
 
       },
       fontFamily: {
@@ -43,6 +45,11 @@ module.exports = {
           lineHeight: '24px',
           letterSpacing: '-0.25px',
           fontWeight: '700',
+        }],
+        'heading-s-nobold': ['15px', {
+          lineHeight: '24px',
+          letterSpacing: '-0.25px',
+          fontWeight: '500',
         }],
         'body': ['13px', {
           lineHeight: '18px',

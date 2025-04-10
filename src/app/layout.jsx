@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
 
                     {/* Contenu principal */}
                     <main className="flex-1 overflow-auto p-8">
-                        <div className="max-w-7xl mx-auto w-[90%] md:w-[672px] lg:w-[730px] pt-14">
+                        <div className="max-w-7xl mx-auto w-[90%] md:w-4/5 lg:w-3/4 pt-14">
                             {children}
                         </div>
                     </main>

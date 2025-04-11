@@ -1,6 +1,7 @@
-"use client"    
+"use client"
 
 import Buttons from "@/components/buttons";
+import Image from "next/image";
 import { ChevronDown, Check } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Invoice from "./components/invoice";
@@ -33,7 +34,7 @@ const FilterDropdown = () => {
 
     return (
         <div className={`relative ${isDesktop ? 'group' : ''}`}>
-            <button 
+            <button
                 className="flex items-center gap-2"
                 onClick={() => !isDesktop && setIsOpen(!isOpen)}
                 aria-expanded={isOpen}
@@ -42,18 +43,17 @@ const FilterDropdown = () => {
                 <span className="text-heading-s text-dark-2">
                     Filtrer<span className="hidden md:inline"> par statut</span>
                 </span>
-                <ChevronDown 
+                <ChevronDown
                     className={`w-6 h-6 text-primary transition-transform ${isOpen ? 'rotate-180' : ''}`}
                     aria-hidden="true"
                 />
             </button>
 
-            <div 
-                className={`absolute top-full ${isDesktop ? '-left-4' : '-left-8 sm:-left-4'} mt-2 ${
-                    isDesktop 
-                    ? 'invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200' 
-                    : isOpen ? 'block' : 'hidden'
-                }`}
+            <div
+                className={`absolute top-full ${isDesktop ? '-left-4' : '-left-8 sm:-left-4'} mt-2 ${isDesktop
+                        ? 'invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200'
+                        : isOpen ? 'block' : 'hidden'
+                    }`}
                 onMouseEnter={() => isDesktop && setIsOpen(true)}
                 onMouseLeave={() => isDesktop && setIsOpen(false)}
                 role="menu"
@@ -61,8 +61,8 @@ const FilterDropdown = () => {
                 <div className="pt-2">
                     <div className="bg-white rounded-lg shadow-lg p-4 min-w-[192px] z-10">
                         {filterOptions.map((option) => (
-                            <label 
-                                key={option.id} 
+                            <label
+                                key={option.id}
                                 className="flex items-center gap-3 py-2 cursor-pointer"
                             >
                                 <div className="relative w-4 h-4">
@@ -73,7 +73,7 @@ const FilterDropdown = () => {
                                         onChange={() => toggleFilter(option.id)}
                                         className="peer w-4 h-4 appearance-none bg-gray-1 checked:bg-primary hover:border-2 hover:border-primary rounded-sm"
                                     />
-                                    <Check 
+                                    <Check
                                         className="w-3 h-3 text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 peer-checked:opacity-100 stroke-[4]"
                                         aria-hidden="true"
                                     />
@@ -106,7 +106,7 @@ const DashboardPage = () => {
                         <Buttons type="new-invoice">
                             Nouvelle facture
                         </Buttons>
-                        <Buttons type="new-invoice-mobile"/>
+                        <Buttons type="new-invoice-mobile" />
                     </div>
                 </div>
                 <div className="flex flex-col gap-4">
@@ -124,6 +124,11 @@ const DashboardPage = () => {
                     <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Brouillon" />
                 </div>
             </div>
+            {/* <div className="flex items-center flex-col gap-4 w-60 mx-auto min-h-[calc(100vh-200px)] justify-center">
+                <Image src="/nothing-here.svg" alt="empty-state" width={240} height={200} />
+                <h2 className="text-heading-m text-dark-2">Il n'y a rien ici</h2>
+                <p className="text-body text-gray-2">  Créez une facture en cliquant sur le bouton <span className="text-body-bold">Nouvelle facture</span> et commencez à travailler</p>
+            </div> */}
         </>
     );
 };

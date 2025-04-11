@@ -59,6 +59,11 @@ module.exports = {
           letterSpacing: '-0.1px',
           fontWeight: '500',
         }],
+        'body-bold': ['13px', {
+          lineHeight: '18px',
+          letterSpacing: '-0.1px',
+          fontWeight: '700',
+        }],
       },
     },
   },

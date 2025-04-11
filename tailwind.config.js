@@ -23,8 +23,11 @@ module.exports = {
         'gray-1': '#DFE3FA',
         'gray-2': '#888EB0',
         'gray-light': '#E4E7F7',
+        'gray-super-light': '#F4F4F5',
         'green-1': '#33D69F',
         'green-light': '#F5FDFA',
+        'orange-1': '#FF8F00',
+        'orange-light': '#FEFAF1',
 
       },
       fontFamily: {

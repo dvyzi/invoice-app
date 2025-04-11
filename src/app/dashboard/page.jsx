@@ -109,7 +109,20 @@ const DashboardPage = () => {
                         <Buttons type="new-invoice-mobile"/>
                     </div>
                 </div>
-                <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre 2025" total="1,800.90" status="Payée" />
+                <div className="flex flex-col gap-4">
+                    <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Payée" />
+                    <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="En attente" />
+                    <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Brouillon" />
+                    <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Payée" />
+                    <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="En attente" />
+                    <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Brouillon" />
+                    <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Payée" />
+                    <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="En attente" />
+                    <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Brouillon" />
+                    <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Payée" />
+                    <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="En attente" />
+                    <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Brouillon" />
+                </div>
             </div>
         </>
     );

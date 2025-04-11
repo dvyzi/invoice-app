@@ -1,6 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import StatusButton from './StatusButton';
 
 export default function Invoice({ id, name, date, dateYear, total, status }) {
     return (
@@ -15,17 +16,7 @@ export default function Invoice({ id, name, date, dateYear, total, status }) {
                 <p className="text-heading-s text-dark-2 hidden md:block">{total} €</p>
                 <p className="text-heading-s-nobold text-gray-2 block md:hidden">{name}</p>
                 <div className='flex items-center gap-2'>
-                    <button className="text-heading-s-nobold text-dark-2 w-28 href">
-                        {status === 'Payée' ? (
-                            <span className='text-green-1 text-heading-s bg-green-light rounded-md px-2 py-1 flex justify-center items-center'><div className='bg-green-1 rounded-full w-2 h-2 mr-2'></div> {status}</span>
-                        ) : status === 'En attente' ? (
-                            <span className='text-orange-1 text-heading-s bg-orange-light rounded-md px-2 py-1 flex justify-center items-center'><div className='bg-orange-1 rounded-full w-2 h-2 mr-2'></div> {status}</span>
-                        ) : status === 'Brouillon' ? (
-                            <span className='text-dark-light text-heading-s bg-gray-super-light rounded-md px-2 py-1 flex justify-center items-center'><div className='bg-dark-light rounded-full w-2 h-2 mr-2'></div> {status}</span>
-                        ) : (
-                            <span>{status}</span>
-                        )}
-                    </button>
+                    <StatusButton status={status} />
                     <ChevronRight className='text-primary hidden md:block' />
                 </div>
             </div>

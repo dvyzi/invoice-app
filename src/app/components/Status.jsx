@@ -1,4 +1,4 @@
-export default function StatusButton({ status }) {
+export default function Status({ status }) {
     const getStatusConfig = (status) => {
         switch (status) {
             case 'Payée':

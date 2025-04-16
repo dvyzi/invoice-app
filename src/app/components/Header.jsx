@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Header() {
     return (
-        <header className="bg-dark-1 shadow-md h-[72px] w-full md:h-20 lg:h-full lg:w-[103px] lg:rounded-tr-[20px] lg:rounded-br-[20px]">
+        <header className="bg-dark-1 shadow-md h-[72px] w-full md:h-20 lg:h-full lg:w-[103px] lg:rounded-tr-[20px] lg:rounded-br-[20px] fixed z-50">
             <nav className="flex justify-between lg:h-full lg:flex-col">
                 <div>
                     <Link href="/">

@@ -15,6 +15,8 @@ module.exports = {
         'muted-dark': '#7E88C3',
         'dark-1': '#252945',
         'dark-2': '#0C0E16',
+        'dark-3': '#141625',
+        'dark-4': '#1E2139',
         'dark-light': '#373B53',
         danger: '#EC5757',
         'danger-light': '#FF9797',
@@ -22,16 +24,19 @@ module.exports = {
         'dark-gray': '#7E88C3',
         'gray-1': '#DFE3FA',
         'gray-2': '#888EB0',
-        'gray-light': '#E4E7F7',
+        'gray-3': '#7E88C3',
+        'gray-light': '#F9FAFE',
         'gray-super-light': '#F4F4F5',
         'green-1': '#33D69F',
         'green-light': '#F5FDFA',
         'orange-1': '#FF8F00',
         'orange-light': '#FEFAF1',
-
+        'light-bg': '#F8F8FB',
+        'light-gray': '#F9FAFE',
       },
       fontFamily: {
         'league-spartan': ['"League Spartan"', 'sans-serif'],
+        sans: ['var(--font-spartan)'],
       },
       fontSize: {
         'heading-l': ['36px', {
@@ -64,6 +69,20 @@ module.exports = {
           letterSpacing: '-0.1px',
           fontWeight: '700',
         }],
+      },
+      keyframes: {
+        slideIn: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        slideOut: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+      },
+      animation: {
+        'slideIn': 'slideIn 0.3s ease-in-out',
+        'slideOut': 'slideOut 0.3s ease-in-out',
       },
     },
   },

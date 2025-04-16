@@ -1,4 +1,4 @@
-import Controls from "./components/controls";
+import Controls from "@components/controls";
 
 const InvoicePage = () => {
     return (

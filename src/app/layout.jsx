@@ -1,14 +1,23 @@
 import './globals.css'
-import Header from '@/components/header'
+import Header from '@components/Header'
 export const metadata = {
     title: 'Application de Facturation',
     description: 'Gérez vos factures en toute simplicité',
 }
+import { League_Spartan } from 'next/font/google'
+
+const LeagueSpartan = League_Spartan({
+    subsets: ['latin'],
+    weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+    variable: '--font-league-spartan',
+})
+
+
 
 export default function RootLayout({ children }) {
     return (
         <html lang="fr">
-            <body className="bg-light">
+            <body className={`bg-light ${LeagueSpartan.variable}`}>
                 <div className="flex flex-col lg:flex-row h-screen">
                     {/* Sidebar */}
                     <Header />
@@ -23,4 +32,4 @@ export default function RootLayout({ children }) {
             </body>
         </html>
     )
-} 
+}

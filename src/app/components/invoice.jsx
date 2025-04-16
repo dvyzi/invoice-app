@@ -1,7 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import StatusButton from './StatusButton';
+import Status from '@components/Status';
 
 export default function Invoice({ id, name, date, dateYear, total, status }) {
     return (
@@ -16,7 +16,7 @@ export default function Invoice({ id, name, date, dateYear, total, status }) {
                 <p className="text-heading-s text-dark-2 hidden md:block">{total} €</p>
                 <p className="text-heading-s-nobold text-gray-2 block md:hidden">{name}</p>
                 <div className='flex items-center gap-2'>
-                    <StatusButton status={status} />
+                    <Status status={status} />
                     <ChevronRight className='text-primary hidden md:block' />
                 </div>
             </div>

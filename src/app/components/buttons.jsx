@@ -10,9 +10,11 @@ export default function Buttons({ type, children, onPress }) {
             return <button className="bg-primary text-white px-3 py-3 rounded-3xl flex items-center gap-2 hover:bg-primary-light text-heading-s">{children}</button>;
         case 'secondary':
             return <button className="bg-gray-1 text-dark-gray px-3 py-3 rounded-3xl flex items-center gap-2 hover:bg-gray-light text-heading-s">{children}</button>;
+        case 'cancel':
+            return <button className="bg-gray-1 text-dark-gray px-3 py-3 rounded-3xl flex items-center gap-2 hover:bg-gray-light text-heading-s">{children}</button>;
         default:
             return <button className="bg-primary text-white px-4 py-2 rounded-md text-heading-s">{children}</button>;
         case 'tertiary':
-            return <button className="bg-dark-light text-dark-gray px-3 py-3 rounded-3xl flex items-center gap-2 hover:bg-dark-2 text-heading-s">{children}</button>;
+            return <button className="bg-dark-light text-gray-2 px-3 py-3 rounded-3xl flex items-center gap-2 hover:bg-dark-2 text-heading-s">{children}</button>;
     }
 }

@@ -48,48 +48,139 @@ const NewInvoicePopup = ({ isOpen, onClose }) => {
             <X size={24} />
           </button>
 
-          <h2 className="text-heading-m text-dark-2 mb-6">Nouvelle Facture</h2>
+          <h2 className="text-heading-m text-dark-2 mb-8">Nouvelle Facture</h2>
 
-          <form className="space-y-6">
-
-            <div className='flex flex-col gap-6 pt-3'>
-              <h3 className="text-heading-s text-primary">Facturé par</h3>
-              <div className='flex flex-col gap-2'>
-                <label htmlFor="address" className='text-body text-muted-dark'>Adresse</label>
-                <input type="text" id="address" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
+          <form className="space-y-8">
+            <div>
+              <h3 className="text-heading-s text-primary mb-4">Facturé par</h3>
+              <div className='flex flex-col gap-4'>
+                <div className='flex flex-col gap-2'>
+                  <div className='flex justify-between items-center'>
+                    <label htmlFor="address" className='text-body text-muted-dark'>Adresse</label>
+                    <p className='text-xs text-danger'>Champs manquant</p>
+                  </div>
+                  <input type="text" id="address" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
+                </div>
+                <div className='flex justify-between items-center gap-4'>
+                  <div className='flex flex-col gap-2 flex-1'>
+                    <div className='flex justify-between items-center'>
+                      <label htmlFor="city" className='text-body text-muted-dark'>Ville</label>
+                      <p className='text-xs text-danger'>Ch. manquant</p>
+                    </div>
+                    <input type="text" id="city" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
+                  </div>
+                  <div className='flex flex-col gap-2 flex-1'>
+                    <div className='flex justify-between items-center'>
+                      <label htmlFor="postalCode" className='text-body text-muted-dark'>C. postal</label>
+                      <p className='text-xs text-danger'>Ch. manquant</p>
+                    </div>
+                    <input type="text" id="postalCode" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
+                  </div>
+                  <div className='flex flex-col gap-2 flex-1'>
+                    <div className='flex justify-between items-center'>
+                      <label htmlFor="country" className='text-body text-muted-dark'>Pays</label>
+                      <p className='text-xs text-danger'>Ch. manquant</p>
+                    </div>
+                    <input type="text" id="country" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
+                  </div>
+                </div>
               </div>
-              <div className='flex justify-between items-center gap-4'>
-                <div className='flex flex-col gap-2 flex-1'>
-                  <label htmlFor="city" className='text-body text-muted-dark'>Ville</label>
-                  <input type="text" id="city" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
+            </div>
+
+            <div>
+              <h3 className="text-heading-s text-primary mb-4">Facturé à</h3>
+              <div className='flex flex-col gap-4'>
+                <div className='flex flex-col gap-2'>
+                  <div className='flex justify-between items-center'>
+                    <label htmlFor="clientName" className='text-body text-muted-dark'>Nom du client</label>
+                    <p className='text-xs text-danger'>Champs manquant</p>
+                  </div>
+                  <input type="text" id="clientName" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
                 </div>
-                <div className='flex flex-col gap-2 flex-1'>
-                  <label htmlFor="postalCode" className='text-body text-muted-dark'>Code postal</label>
-                  <input type="text" id="postalCode" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
+                <div className='flex flex-col gap-2'>
+                  <div className='flex justify-between items-center'>
+                    <label htmlFor="clientEmail" className='text-body text-muted-dark'>Email client</label>
+                    <p className='text-xs text-danger'>Champs manquant</p>
+                  </div>
+                  <input type="text" id="clientEmail" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
                 </div>
-                <div className='flex flex-col gap-2 flex-1'>
-                  <label htmlFor="country" className='text-body text-muted-dark'>Pays</label>
-                  <input type="text" id="country" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
+                <div className='flex flex-col gap-2'>
+                  <div className='flex justify-between items-center'>
+                    <label htmlFor="clientAddress" className='text-body text-muted-dark'>Adresse</label>
+                    <p className='text-xs text-danger'>Champs manquant</p>
+                  </div>
+                  <input type="text" id="clientAddress" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
+                </div>
+                <div className='flex justify-between items-center gap-4'>
+                  <div className='flex flex-col gap-2 flex-1'>
+                    <div className='flex justify-between items-center'>
+                      <label htmlFor="city" className='text-body text-muted-dark'>Ville</label>
+                      <p className='text-xs text-danger'>Ch. manquant</p>
+                    </div>
+                    <input type="text" id="city" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
+                  </div>
+                  <div className='flex flex-col gap-2 flex-1'>
+                    <div className='flex justify-between items-center'>
+                      <label htmlFor="postalCode" className='text-body text-muted-dark'>C. postal</label>
+                      <p className='text-xs text-danger'>Ch. manquant</p>
+                    </div>
+                    <input type="text" id="postalCode" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
+                  </div>
+                  <div className='flex flex-col gap-2 flex-1'>
+                    <div className='flex justify-between items-center'>
+                      <label htmlFor="country" className='text-body text-muted-dark'>Pays</label>
+                      <p className='text-xs text-danger'>Ch. manquant</p>
+                    </div>
+                    <input type="text" id="country" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
+                  </div>
+                </div>
+                <div className='flex justify-between items-center pt-10'>
+                  <div className='flex flex-col gap-2 w-[48%]'>
+                    <div className='flex justify-between items-center'>
+                      <label htmlFor="invoiceDate" className='text-body text-muted-dark'>Date de la facture</label>
+                      <p className='text-xs text-danger'>Ch. manquant</p>
+                    </div>
+                    <input type="date" id="invoiceDate" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
+                  </div>
+                  <div className='flex flex-col gap-2 w-[48%]'>
+                    <div className='flex justify-between items-center'>
+                      <label htmlFor="paymentTerms" className='text-body text-muted-dark'>Conditions de paiement</label>
+                      <p className='text-xs text-danger'>Ch. manquant</p>
+                    </div>
+                    <select id="paymentTerms" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full'>
+                      <option value="1">Net 1 jour</option>
+                      <option value="2">Net 7 jours</option>
+                      <option value="3">Net 14 jours</option>
+                      <option value="4">Net 30 jours</option>
+                    </select>
+                  </div>
+                </div>
+                <div className='flex flex-col gap-2'>
+                  <div className='flex justify-between items-center'>
+                    <label htmlFor="projectDescription" className='text-body text-muted-dark'>Description de projet</label>
+                    <p className='text-xs text-danger'>Champs manquant</p>
+                  </div>
+                  <input type="text" id="projectDescription" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
                 </div>
               </div>
             </div>
 
 
 
-
-
-
-            <div className="flex justify-end gap-4 mt-8">
-              <button
-                type="button"
-                onClick={handleClose}
-                className="px-6 py-3 text-heading-s text-gray-2 hover:text-gray-3"
+            <div className="flex justify-between gap-4 pt-4">
+              <Buttons
+                type="cancel"
               >
                 Annuler
-              </button>
-              <Buttons type="primary">
-                Sauvegarder &amp; envoyer
               </Buttons>
+              <div className='flex gap-4'>
+                <Buttons type="tertiary">
+                  Brouillon
+                </Buttons>
+                <Buttons type="primary">
+                  Sauvegarder &amp; envoyer
+                </Buttons>
+              </div>
             </div>
           </form>
         </div>

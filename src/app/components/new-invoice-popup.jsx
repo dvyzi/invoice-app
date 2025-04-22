@@ -1,12 +1,71 @@
 "use client"
 
 import { useState, useRef, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { Trash, Plus, X } from 'lucide-react';
 import Buttons from "@components/buttons";
+
+const ProductInputs = ({ productDetails, onProductChange, onRemove }) => {
+  return (
+    <div className='flex flex-col gap-2'>
+      <div className='flex justify-between items-center gap-4'>
+        <div className='flex-[3]'>
+          <input 
+            type="text" 
+            id="productName" 
+            value={productDetails.name}
+            onChange={(e) => onProductChange('name', e.target.value)}
+            className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' 
+          />
+        </div>
+        <div className='flex-1'>
+          <input 
+            type="number" 
+            id="productQuantity" 
+            value={productDetails.quantity}
+            onChange={(e) => onProductChange('quantity', e.target.value)}
+            className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' 
+          />
+        </div>
+        <div className='flex-[2]'>
+          <input 
+            type="number" 
+            id="productPrice" 
+            value={productDetails.price}
+            onChange={(e) => onProductChange('price', e.target.value)}
+            className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' 
+          />
+        </div>
+        <div className='flex-[2]'>
+          <input 
+            type="number" 
+            id="productTotal" 
+            value={productDetails.total}
+            readOnly
+            className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full bg-gray-50' 
+          />
+        </div>
+        {onRemove && (
+          <button 
+            onClick={onRemove}
+            className="text-danger hover:text-danger-light"
+          >
+            <Trash size={20} />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const NewInvoicePopup = ({ isOpen, onClose }) => {
   const popupRef = useRef(null);
   const [isClosing, setIsClosing] = useState(false);
+  const [products, setProducts] = useState([{
+    name: '',
+    quantity: '',
+    price: '',
+    total: ''
+  }]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -30,6 +89,37 @@ const NewInvoicePopup = ({ isOpen, onClose }) => {
       setIsClosing(false);
       onClose();
     }, 300); // Durée de l'animation
+  };
+
+  const handleProductChange = (index, field, value) => {
+    setProducts(prev => {
+      const newProducts = [...prev];
+      newProducts[index] = {
+        ...newProducts[index],
+        [field]: value
+      };
+      
+      if (field === 'quantity' || field === 'price') {
+        const quantity = parseFloat(newProducts[index].quantity) || 0;
+        const price = parseFloat(newProducts[index].price) || 0;
+        newProducts[index].total = (quantity * price).toFixed(2);
+      }
+      
+      return newProducts;
+    });
+  };
+
+  const addProduct = () => {
+    setProducts(prev => [...prev, {
+      name: '',
+      quantity: '',
+      price: '',
+      total: ''
+    }]);
+  };
+
+  const removeProduct = (index) => {
+    setProducts(prev => prev.filter((_, i) => i !== index));
   };
 
   if (!isOpen && !isClosing) return null;
@@ -162,10 +252,42 @@ const NewInvoicePopup = ({ isOpen, onClose }) => {
                   </div>
                   <input type="text" id="projectDescription" className='text-heading-s text-dark-2 border border-gray-1 rounded-lg h-12 px-4 outline-primary-light outline-1 w-full' />
                 </div>
+                <h2 className='text-gray-2 text-heading-s'>Liste produits</h2>
+                <div className='flex flex-col gap-4'>
+                  <div className='flex justify-between items-center gap-4'>
+                    <div className='flex-[3]'>
+                      <label htmlFor="productName" className='text-body text-muted-dark'>Nom des produits</label>
+                    </div>
+                    <div className='flex-1'>
+                      <label htmlFor="productQuantity" className='text-body text-muted-dark'>QTE.</label>
+                    </div>
+                    <div className='flex-[2]'>
+                      <label htmlFor="productPrice" className='text-body text-muted-dark'>Prix</label>
+                    </div>
+                    <div className='flex-[2]'>
+                      <label htmlFor="productTotal" className='text-body text-muted-dark'>Total</label>
+                    </div>
+                    <div className='w-5'></div>
+                  </div>
+                  {products.map((product, index) => (
+                    <ProductInputs
+                      key={index}
+                      productDetails={product}
+                      onProductChange={(field, value) => handleProductChange(index, field, value)}
+                      onRemove={products.length > 1 ? () => removeProduct(index) : null}
+                    />
+                  ))}
+                </div>
+                <button
+                  onClick={addProduct}
+                  type="button"
+                  className="flex justify-center items-center gap-2 text-gray-3 bg-gray-light hover:bg-gray-1 mt-4 rounded-full h-12"
+                >
+                  <Plus size={20} />
+                  <span className="text-heading-s">Ajouter un nouveau produit</span>
+                </button>
               </div>
             </div>
-
-
 
             <div className="flex justify-between gap-4 pt-4">
               <Buttons

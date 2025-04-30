@@ -4,6 +4,17 @@ import Link from "next/link";
 import Status from "@components/Status";
 import Buttons from "@components/buttons";
 
+
+function ProductItem({ name, quantity, price, total }) {
+    return (
+        <div className='grid grid-cols-4 w-full pb-6'>
+            <p className='text-heading-s text-dark-2'>{name}</p>
+            <p className='text-heading-s text-dark-gray text-center'>{quantity}</p>
+            <p className='text-heading-s text-dark-gray text-center'>{price} €</p>
+            <p className='text-heading-s text-dark-2 text-right'>{total} €</p>
+        </div>
+    )
+}
 const InvoicePage = () => {
     return (
         <>
@@ -60,9 +71,19 @@ const InvoicePage = () => {
                         </div>
                     </div>
                     <div className='flex md:hidden flex-col gap-2'>
-                            <p className='text-body text-dark-gray'>Envoyé à</p>
-                            <p className='text-heading-s text-dark-2'>johndoe@mail.com</p>
+                        <p className='text-body text-dark-gray'>Envoyé à</p>
+                        <p className='text-heading-s text-dark-2'>johndoe@mail.com</p>
+                    </div>
+                    <div className='flex flex-col items-center gap-2 bg-gray-light rounded-lg p-10 mt-6'>
+                        <div className='grid grid-cols-4 w-full pb-8'>
+                            <p className='text-body text-dark-gray'>Nom du produit</p>
+                            <p className='text-body text-dark-gray text-center'>QTE.</p>
+                            <p className='text-body text-dark-gray text-center'>Prix</p>
+                            <p className='text-body text-dark-gray text-right'>Total</p>
                         </div>
+                        <ProductItem name="Banner Design" quantity={2} price={200} total={400} />
+                        <ProductItem name="Email Design" quantity={1} price={156} total={156} />
+                    </div>
                 </div>
             </div>
 

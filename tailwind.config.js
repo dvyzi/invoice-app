@@ -38,7 +38,6 @@ module.exports = {
 				'orange-1': '#FF8F00',
 				'orange-light': '#FEFAF1',
 				'light-bg': '#F8F8FB',
-				'light-gray': '#F9FAFE',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				card: {

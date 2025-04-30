@@ -1,11 +1,12 @@
 "use client"
 
+
 import Buttons from "@components/buttons";
 import Image from "next/image";
 import { ChevronDown, Check } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Invoice from "@components/invoice";
-import NewInvoicePopup from "./components/new-invoice-popup";
+import NewInvoicePopup from "./components/forms/new-invoice-popup";
 
 
 

@@ -5,11 +5,11 @@ export default function Buttons({ type, children, onPress }) {
         case 'new-invoice-mobile':
             return <button className="bg-primary px-[6px] py-[6px] rounded-full text-heading-s flex md:hidden"><img src="/new.svg" alt="New Invoice" /></button>;
         case 'delete':
-            return <button className="bg-danger text-white px-3 py-3 rounded-3xl flex items-center hover:bg-danger-light text-heading-s"> {children}</button>;
+            return <button className="bg-danger text-white px-4 py-3 rounded-3xl flex items-center hover:bg-danger-light text-heading-s"> {children}</button>;
         case 'primary':
             return <button className="bg-primary text-white px-3 py-3 rounded-3xl flex items-center gap-2 hover:bg-primary-light text-heading-s">{children}</button>;
         case 'secondary':
-            return <button className="bg-gray-1 text-dark-gray px-3 py-3 rounded-3xl flex items-center gap-2 hover:bg-gray-light text-heading-s">{children}</button>;
+            return <button className="bg-gray-1 text-dark-gray px-6 py-3 rounded-3xl flex items-center gap-2 hover:bg-gray-light text-heading-s">{children}</button>;
         case 'cancel':
             return <button className="bg-gray-1 text-dark-gray px-3 py-3 rounded-3xl flex items-center gap-2 hover:bg-gray-light text-heading-s">{children}</button>;
         default:

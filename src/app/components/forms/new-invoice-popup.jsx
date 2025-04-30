@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Trash, Plus, X } from 'lucide-react';
+
 import Buttons from "@components/buttons";
 
 const ProductInputs = ({ productDetails, onProductChange, onRemove }) => {

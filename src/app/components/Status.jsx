@@ -31,11 +31,11 @@ export default function Status({ status }) {
     const { textColor, bgColor, dotColor } = getStatusConfig(status);
 
     return (
-        <button className="text-heading-s-nobold text-dark-2 w-28">
+        <div className="text-heading-s-nobold text-dark-2 w-28">
             <span className={`${textColor} text-heading-s ${bgColor} rounded-md px-2 py-1 flex justify-center items-center`}>
                 <div className={`${dotColor} rounded-full w-2 h-2 mr-2`}></div>
                 {status}
             </span>
-        </button>
+        </div>
     );
 } 

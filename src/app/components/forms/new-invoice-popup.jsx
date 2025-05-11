@@ -47,7 +47,10 @@ const ProductInputs = ({ productDetails, onProductChange, onRemove }) => {
         </div>
         {onRemove && (
           <button 
-            onClick={onRemove}
+            onClick={(e) => {
+              e.preventDefault();
+              onRemove();
+            }}
             className="text-danger hover:text-danger-light"
           >
             <Trash size={20} />
@@ -120,6 +123,7 @@ const NewInvoicePopup = ({ isOpen, onClose }) => {
   };
 
   const removeProduct = (index) => {
+    console.log(index);
     setProducts(prev => prev.filter((_, i) => i !== index));
   };
 

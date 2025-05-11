@@ -1,14 +1,11 @@
 "use client"
 
-
 import Buttons from "@components/buttons";
 import Image from "next/image";
 import { ChevronDown, Check } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Invoice from "@components/invoice";
 import NewInvoicePopup from "./components/forms/new-invoice-popup";
-
-
 
 const FilterDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -94,6 +91,15 @@ const FilterDropdown = () => {
 
 const Page = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  useEffect(() => {
+    fetch('api/authentification')
+      .then(response => {} response.json())
+      .then(data => {
+
+      }).catch(error => {
+        console.log(error, 'ici')
+      })
+  }, [])
 
   return (
     <>

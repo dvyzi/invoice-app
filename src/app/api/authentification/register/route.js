@@ -26,8 +26,8 @@ export async function POST(request) {
 
     if(alreadyEmail){
         fieldsError.push({
-            field : 'email'
-            message : ''
+            field : 'email',
+            message : 'Email déjà utilisé'
         })
     }
 
@@ -63,4 +63,19 @@ export async function POST(request) {
             lastName: body.lastName
         }
     });
+
+    return NextResponse.json(
+        {
+            message: 'Utilisateur créé avec succès',
+            status: 201,
+            user: {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                lastName: user.lastName
+                // Ne pas inclure le mot de passe ici pour des raisons de sécurité
+            }
+        },
+        { status: 201 }
+    );
 }

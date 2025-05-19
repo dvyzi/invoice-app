@@ -2,7 +2,7 @@
 
 import Buttons from "@components/buttons";
 import Image from "next/image";
-import { ChevronDown, Check } from 'lucide-react';
+import { ChevronDown, Check, Eye, EyeOff } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Invoice from "@components/invoice";
 import NewInvoicePopup from "./components/forms/new-invoice-popup";
@@ -90,60 +90,324 @@ const FilterDropdown = () => {
 };
 
 const Page = () => {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
+
+  const [isAuthentificated, setIsAuthentificated] = useState(true)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [name, setName] = useState('')
+  const [nameError, setNameError] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [lastNameError, setLastNameError] = useState('')
+  const [emptyError, setEmptyError] = useState('')
+
+
   useEffect(() => {
     fetch('api/authentification')
-      .then(response => {} response.json())
-      .then(data => {
-
-      }).catch(error => {
-        console.log(error, 'ici')
+      .then(response => {
+        response.json().then(data => {
+          if (data.status === 404) setIsAuthentificated(false)
+        })
+      })
+      .catch(err => {
+        setIsAuthentificated(false)
       })
   }, [])
 
+  const requestAuthentification = () => {
+
+    if (isRegister) {
+      fetch("api/authentification/register", {
+        method: 'POST',
+        body: JSON.stringify({
+          email, password, lastName, name
+        })
+      }).then(response => response.json().then((data) => {
+        if (data.error) {
+          setNameError('')
+          setLastNameError('')
+          setEmailError('')
+          setPasswordError('')
+
+          data.fields.forEach(element => {
+            console.log(element);
+            if (element === 'name') {
+              setNameError('*Champs obligatoires')
+            }
+            if (element === 'lastName') {
+              setLastNameError('*Champs obligatoires')
+            }
+            if (element === 'email') {
+              setEmailError('Format d\'email invalide')
+            }
+            if (element === 'password') {
+              setPasswordError('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.')
+            }
+          });
+        }
+
+      }).catch((error) => {
+        console.log(error, 'ici');
+
+      }))
+
+    } else {
+      fetch("api/authentification", {
+        method: 'POST',
+        body: JSON.stringify({
+          email, password,
+        })
+      }).then(response => response.json())
+        .then(() => {
+
+        })
+    }
+  }
+
+  const [isRegister, setIsRegister] = useState(false)
+  const [text, setText] = useState('Pas encore inscrit ? cliquez ici pour vous inscrire !')
+
+
+  const switchregisterlogin = () => {
+    setIsRegister(!isRegister)
+    if (isRegister) {
+      setText('Pas encore inscrit ? cliquez ici pour vous inscrire !')
+    } else {
+      setText('Déjà inscrit ? cliquez ici pour vous connecter !')
+    }
+  }
+
+
   return (
     <>
-      <div className="flex flex-col gap-16">
-        <div className="flex justify-between items-center">
-          <div className="flex flex-col gap-[6px]">
-            <h1 className="text-heading-m md:text-heading-l">Factures</h1>
-            <p className="text-heading-s-nobold text-gray-2">
-              <span className="hidden md:inline">Il y a </span>
-              7 factures
-              <span className="hidden md:inline"> au total</span>
-            </p>
-          </div>
-          <div className="flex items-center gap-4 md:gap-9">
-            <FilterDropdown />
-            <Buttons type="new-invoice" onPress={() => setIsPopupOpen(true)}>
-              Nouvelle facture
-            </Buttons>
-            <Buttons type="new-invoice-mobile" onPress={() => setIsPopupOpen(true)} />
+      {!isAuthentificated ? (
+        <div className="flex items-center justify-center h-[calc(100vh-200px)] w-full">
+          <div className="flex flex-col gap-6 w-full max-w-md mx-auto p-8 bg-white rounded-lg shadow-lg">
+            {isRegister ? (
+              <h2 className="text-heading-m text-dark-2 text-center">Inscription</h2>
+            ) : (
+              <h2 className="text-heading-m text-dark-2 text-center">Connexion</h2>
+            )}
+
+            {isRegister ? (
+              <>
+                <div className="flex justify-between">
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="name" className="text-heading-s text-dark-2">Prénom</label>
+                    <input type="text" id="name" name="name" required
+                      className="p-3 border border-gray-1 rounded-md focus:outline-none focus:border-primary"
+                      placeholder="Jean"
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                    <p className="text-danger text-body">{nameError}</p>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="lastName" className="text-heading-s text-dark-2">Nom</label>
+                    <input type="text" id="lastName" name="lastName" required
+                      className="p-3 border border-gray-1 rounded-md focus:outline-none focus:border-primary"
+                      placeholder="Dupont"
+                      onChange={(e) => setLastName(e.target.value)}
+                    />
+                    <p className="text-danger text-body">{lastNameError}</p>
+                  </div>
+                </div>
+              </>
+            ) : (
+              null
+            )}
+
+            <div className="flex flex-col gap-2">
+              <label htmlFor="email" className="text-heading-s text-dark-2">Email</label>
+              <input type="email" id="email" name="email" required
+                className="p-3 border border-gray-1 rounded-md focus:outline-none focus:border-primary"
+                placeholder="votre@email.com"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <p className="text-danger text-body">{emailError}</p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="password" className="text-heading-s text-dark-2">Mot de passe</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  required
+                  className="w-full p-3 border border-gray-1 rounded-md focus:outline-none focus:border-primary"
+                  placeholder="••••••••"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-2 hover:text-primary transition-colors"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+              <p className="text-danger text-body">{passwordError}</p>
+            </div>
+            <p className="text-danger text-center text-body-bold hidden">Email ou mot de passe incorrect</p>
+            {isRegister ? (
+              <button
+                type="submit"
+                onClick={requestAuthentification}
+                className="w-full bg-primary text-white py-3 rounded-full hover:bg-primary-light transition-colors"
+              >
+                S'inscrire
+              </button>
+            ) : (
+              <button
+                type="submit"
+                onClick={requestAuthentification}
+                className="w-full bg-primary text-white py-3 rounded-full hover:bg-primary-light transition-colors"
+              >
+                Se connecter
+              </button>
+            )}
+            <span onClick={switchregisterlogin} className="text-heading-s text-gray-2 hover:text-primary transition-colors cursor-pointer text-center">{text}</span>
           </div>
         </div>
-        <div className="flex flex-col gap-4">
-          <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Payée" />
-          <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="En attente" />
-          <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Brouillon" />
-          <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Payée" />
-          <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="En attente" />
-          <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Brouillon" />
-          <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Payée" />
-          <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="En attente" />
-          <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Brouillon" />
-          <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Payée" />
-          <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="En attente" />
-          <Invoice id="RT3080" name="Jules Wyvern" date="19 Décembre" dateYear="2025" total="1,800.90" status="Brouillon" />
-        </div>
-      </div>
-      {/* <div className="flex items-center flex-col gap-4 w-60 mx-auto min-h-[calc(100vh-200px)] justify-center">
+      ) : (
+        <>
+          <div className='flex flex-col gap-16'>
+            <div className='flex justify-between items-center'>
+              <div className='flex flex-col gap-[6px]'>
+                <h1 className='text-heading-m md:text-heading-l'>Factures</h1>
+                <p className='text-heading-s-nobold text-gray-2'>
+                  <span className='hidden md:inline'>Il y a </span>7 factures
+                  <span className='hidden md:inline'> au total</span>
+                </p>
+              </div>
+              <div className='flex items-center gap-4 md:gap-9'>
+                <FilterDropdown />
+                <Buttons
+                  type='new-invoice'
+                  onPress={() => setIsPopupOpen(true)}
+                >
+                  Nouvelle facture
+                </Buttons>
+                <Buttons
+                  type='new-invoice-mobile'
+                  onPress={() => setIsPopupOpen(true)}
+                />
+              </div>
+            </div>
+            <div className='flex flex-col gap-4'>
+              <Invoice
+                id='RT3080'
+                name='Jules Wyvern'
+                date='19 Décembre'
+                dateYear='2025'
+                total='1,800.90'
+                status='Payée'
+              />
+              <Invoice
+                id='RT3080'
+                name='Jules Wyvern'
+                date='19 Décembre'
+                dateYear='2025'
+                total='1,800.90'
+                status='En attente'
+              />
+              <Invoice
+                id='RT3080'
+                name='Jules Wyvern'
+                date='19 Décembre'
+                dateYear='2025'
+                total='1,800.90'
+                status='Brouillon'
+              />
+              <Invoice
+                id='RT3080'
+                name='Jules Wyvern'
+                date='19 Décembre'
+                dateYear='2025'
+                total='1,800.90'
+                status='Payée'
+              />
+              <Invoice
+                id='RT3080'
+                name='Jules Wyvern'
+                date='19 Décembre'
+                dateYear='2025'
+                total='1,800.90'
+                status='En attente'
+              />
+              <Invoice
+                id='RT3080'
+                name='Jules Wyvern'
+                date='19 Décembre'
+                dateYear='2025'
+                total='1,800.90'
+                status='Brouillon'
+              />
+              <Invoice
+                id='RT3080'
+                name='Jules Wyvern'
+                date='19 Décembre'
+                dateYear='2025'
+                total='1,800.90'
+                status='Payée'
+              />
+              <Invoice
+                id='RT3080'
+                name='Jules Wyvern'
+                date='19 Décembre'
+                dateYear='2025'
+                total='1,800.90'
+                status='En attente'
+              />
+              <Invoice
+                id='RT3080'
+                name='Jules Wyvern'
+                date='19 Décembre'
+                dateYear='2025'
+                total='1,800.90'
+                status='Brouillon'
+              />
+              <Invoice
+                id='RT3080'
+                name='Jules Wyvern'
+                date='19 Décembre'
+                dateYear='2025'
+                total='1,800.90'
+                status='Payée'
+              />
+              <Invoice
+                id='RT3080'
+                name='Jules Wyvern'
+                date='19 Décembre'
+                dateYear='2025'
+                total='1,800.90'
+                status='En attente'
+              />
+              <Invoice
+                id='RT3080'
+                name='Jules Wyvern'
+                date='19 Décembre'
+                dateYear='2025'
+                total='1,800.90'
+                status='Brouillon'
+              />
+            </div>
+          </div>
+          {/* <div className="flex items-center flex-col gap-4 w-60 mx-auto min-h-[calc(100vh-200px)] justify-center">
                 <Image src="/nothing-here.svg" alt="empty-state" width={240} height={200} />
                 <h2 className="text-heading-m text-dark-2">Il n'y a rien ici</h2>
                 <p className="text-body text-gray-2">  Créez une facture en cliquant sur le bouton <span className="text-body-bold">Nouvelle facture</span> et commencez à travailler</p>
             </div> */}
-      <NewInvoicePopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
+          <NewInvoicePopup
+            isOpen={isPopupOpen}
+            onClose={() => setIsPopupOpen(false)}
+          />
+        </>
+      )}
     </>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

@@ -92,7 +92,8 @@ const FilterDropdown = () => {
 const Page = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false)
 
-  const [isAuthentificated, setIsAuthentificated] = useState(true)
+  const [isAuthentificated, setIsAuthentificated] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState('')
@@ -104,72 +105,112 @@ const Page = () => {
   const [lastNameError, setLastNameError] = useState('')
   const [emptyError, setEmptyError] = useState('')
 
-
-  useEffect(() => {
-    fetch('api/authentification')
-      .then(response => {
-        response.json().then(data => {
-          if (data.status === 404) setIsAuthentificated(false)
-        })
-      })
-      .catch(err => {
-        setIsAuthentificated(false)
-      })
-  }, [])
-
-  const requestAuthentification = () => {
-
-    if (isRegister) {
-      fetch("api/authentification/register", {
-        method: 'POST',
-        body: JSON.stringify({
-          email, password, lastName, name
-        })
-      }).then(response => response.json().then((data) => {
-        if (data.error) {
-          setNameError('')
-          setLastNameError('')
-          setEmailError('')
-          setPasswordError('')
-
-          data.fields.forEach(element => {
-            console.log(element);
-            if (element === 'name') {
-              setNameError('*Champs obligatoires')
-            }
-            if (element === 'lastName') {
-              setLastNameError('*Champs obligatoires')
-            }
-            if (element === 'email') {
-              setEmailError('Format d\'email invalide')
-            }
-            if (element === 'password') {
-              setPasswordError('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.')
-            }
-          });
-        }
-
-      }).catch((error) => {
-        console.log(error, 'ici');
-
-      }))
-
-    } else {
-      fetch("api/authentification", {
-        method: 'POST',
-        body: JSON.stringify({
-          email, password,
-        })
-      }).then(response => response.json())
-        .then(() => {
-
-        })
-    }
-  }
-
   const [isRegister, setIsRegister] = useState(false)
   const [text, setText] = useState('Pas encore inscrit ? cliquez ici pour vous inscrire !')
 
+  useEffect(() => {
+    setIsLoading(true);
+    fetch('/api/user')
+      .then(response => {
+        if (response.ok) {
+          setIsAuthentificated(true);
+          // Laisser l'utilisateur sur la page d'accueil
+        } else {
+          setIsAuthentificated(false);
+        }
+      })
+      .catch(err => {
+        console.error('Erreur lors de la vérification de l\'authentification:', err);
+        setIsAuthentificated(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  const requestAuthentification = async () => {
+    setNameError('');
+    setLastNameError('');
+    setEmailError('');
+    setPasswordError('');
+    setEmptyError('');
+
+    if (isRegister) {
+      try {
+        const response = await fetch("/api/authentification/register", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email, password, lastName, name
+          })
+        });
+
+        const data = await response.json();
+        
+        if (data.error) {
+          if (data.fields) {
+            data.fields.forEach(element => {
+              if (typeof element === 'string') {
+                if (element === 'name') {
+                  setNameError('*Champs obligatoires');
+                }
+                if (element === 'lastName') {
+                  setLastNameError('*Champs obligatoires');
+                }
+                if (element === 'email') {
+                  setEmailError('Format d\'email invalide');
+                }
+                if (element === 'password') {
+                  setPasswordError('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.');
+                }
+              } else if (element.field && element.message) {
+                if (element.field === 'email') {
+                  setEmailError(element.message);
+                }
+              }
+            });
+          } else {
+            setEmptyError(data.error || 'Une erreur est survenue');
+          }
+        } else if (data.status === 201) {
+          // Inscription réussie - passer en mode connexion
+          setIsRegister(false);
+          setText('Pas encore inscrit ? cliquez ici pour vous inscrire !');
+          alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+        }
+      } catch (error) {
+        console.error('Erreur lors de l\'inscription:', error);
+        setEmptyError('Une erreur est survenue. Veuillez réessayer.');
+      }
+    } else {
+      try {
+        const response = await fetch("/api/authentification", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email, password,
+          })
+        });
+
+        const data = await response.json();
+        
+        if (response.ok) {
+          // Connexion réussie - rediriger vers la page d'accueil
+          window.location.href = '/';
+        } else {
+          // Erreur de connexion
+          setEmptyError(data.error || 'Email ou mot de passe incorrect');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la connexion:', error);
+        setEmptyError('Une erreur est survenue. Veuillez réessayer.');
+      }
+    }
+  }
 
   const switchregisterlogin = () => {
     setIsRegister(!isRegister)
@@ -180,10 +221,16 @@ const Page = () => {
     }
   }
 
-
   return (
     <>
-      {!isAuthentificated ? (
+      {isLoading ? (
+        <div className="flex items-center justify-center h-[calc(100vh-200px)] w-full">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-heading-s text-dark-2">Chargement...</p>
+          </div>
+        </div>
+      ) : !isAuthentificated ? (
         <div className="flex items-center justify-center h-[calc(100vh-200px)] w-full">
           <div className="flex flex-col gap-6 w-full max-w-md mx-auto p-8 bg-white rounded-lg shadow-lg">
             {isRegister ? (
@@ -250,7 +297,9 @@ const Page = () => {
               </div>
               <p className="text-danger text-body">{passwordError}</p>
             </div>
-            <p className="text-danger text-center text-body-bold hidden">Email ou mot de passe incorrect</p>
+            {!isRegister && emptyError && (
+              <p className="text-danger text-center text-body-bold">{emptyError}</p>
+            )}
             {isRegister ? (
               <button
                 type="submit"

@@ -1,9 +1,65 @@
 'use client';
 
-import { User, Moon, Hourglass } from 'lucide-react';
+import { User, Moon, Hourglass, LogOut } from 'lucide-react';
 import Link from 'next/link';
+import { useState, useEffect, useRef } from 'react';
 
 export default function Header() {
+    const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+    const [userData, setUserData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const profileMenuRef = useRef(null);
+
+    // Récupérer les informations de l'utilisateur au chargement du composant
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await fetch('/api/user');
+                if (response.ok) {
+                    const data = await response.json();
+                    setUserData(data.user);
+                }
+            } catch (error) {
+                console.error('Erreur lors de la récupération des informations utilisateur:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        
+        fetchUserData();
+    }, []);
+    
+    // Fermer le menu de profil quand on clique ailleurs sur la page
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
+                setIsProfileMenuOpen(false);
+            }
+        };
+        
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+    
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('/api/authentification/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (response.ok) {
+                window.location.href = '/';
+            }
+        } catch (error) {
+            console.error('Erreur lors de la déconnexion:', error);
+        }
+    };
+
     return (
         <header className="bg-dark-1 shadow-md h-[72px] w-full md:h-20 lg:h-full lg:w-[103px] lg:rounded-tr-[20px] lg:rounded-br-[20px] fixed z-50">
             <nav className="flex justify-between lg:h-full lg:flex-col">
@@ -14,20 +70,36 @@ export default function Header() {
                 </div>
 
                 <div className='flex items-center lg:flex-col'>
-                    {/* <div className='px-6 lg:py-6 relative group flex flex-col items-center'>
-                        <div className="bg-primary text-white px-4 py-1.5 rounded-md text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-center min-w-[120px] absolute -left-6 -top-10 flex items-center justify-center gap-1.5">
-                            Soon
-                                <Hourglass className='w-4 h-4' />
+                    <div className="w-full flex items-center justify-center lg:border-t lg:border-l-0 border-l border-[#494E6E] h-full px-6 lg:py-6 relative" ref={profileMenuRef}>
+                        <div 
+                            className="flex justify-center cursor-pointer p-2 rounded-full"
+                            onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                        >
+                            <User className="w-8 h-8 hover:cursor-pointer text-gray-light" />
                         </div>
-                        <Moon className='w-8 h-8 text-[#7E88C3] hover:cursor-pointer' />
-                    </div> */}
-                    <div className="w-full flex items-center justify-center lg:border-t lg:border-l-0 border-l border-[#494E6E] h-full px-6 lg:py-6">
-                        <Link href="#" className="flex justify-center">
-                            <User className="w-10 h-10 hover:cursor-pointer text-gray-light" />
-                        </Link>
+                        
+                        {isProfileMenuOpen && userData && (
+                            <div className="fixed lg:absolute top-[72px] md:top-20 lg:top-[-18px] right-0 lg:left-[103px] lg:right-auto w-auto lg:w-auto bg-white rounded-lg shadow-lg min-w-[200px] py-2 z-50">
+                                <div className="px-4 py-3 border-b border-gray-100">
+                                    <p className="text-sm font-medium text-gray-700">
+                                        {userData.name} {userData.lastName}
+                                    </p>
+                                    <p className="text-xs text-gray-500 truncate">
+                                        {userData.email}
+                                    </p>
+                                </div>
+                                <button 
+                                    onClick={handleLogout}
+                                    className="flex items-center w-full px-4 py-2 text-sm text-left text-red-500 hover:bg-gray-100"
+                                >
+                                    <LogOut className="w-4 h-4 mr-2" />
+                                    Déconnexion
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </nav>
         </header>
-    )
+    );
 }

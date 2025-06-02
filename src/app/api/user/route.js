@@ -1,25 +1,53 @@
 import { NextResponse } from 'next/server';
+import { jwtVerify } from 'jose';
+import { cookies } from 'next/headers';
 import { PrismaClient } from '../../../generated/prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function GET(request) {
+export async function GET() {
     try {
-        const timestamp = new Date().getTime();
-        const user = await prisma.user.create({
-            data: {
-                name: 'Alice',
-                email: `alice@example.com`,
-                password: 'hashed_password_here', // Required field according to schema
-            },
-        });
+        // Récupérer le token depuis les cookies
+        const cookieStore = cookies();
+        const token = cookieStore.get('auth-token')?.value;
         
-        return NextResponse.json({ success: true, user });
-    } catch (error) {
-        console.error('Prisma error:', error);
+        if (!token) {
+            return NextResponse.json(
+                {
+                    error: 'Non authentifié',
+                    status: 401
+                },
+                { status: 401 }
+            );
+        }
+        
+        // Vérifier et décoder le token
+        const { payload } = await jwtVerify(
+            token, 
+            new TextEncoder().encode(process.env.JWT_SECRET)
+        );
+        
+        // Retourner les informations de l'utilisateur
         return NextResponse.json(
-            { success: false, error: error.message },
-            { status: 500 }
+            {
+                user: {
+                    id: payload.id,
+                    email: payload.email,
+                    name: payload.name,
+                    lastName: payload.lastName
+                },
+                status: 200
+            },
+            { status: 200 }
+        );
+    } catch (error) {
+        console.error('Erreur lors de la récupération des informations de l\'utilisateur:', error);
+        return NextResponse.json(
+            {
+                error: 'Non authentifié',
+                status: 401
+            },
+            { status: 401 }
         );
     } finally {
         await prisma.$disconnect();

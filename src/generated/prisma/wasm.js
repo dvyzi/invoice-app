@@ -130,6 +130,40 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.InvoiceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  address: 'address',
+  city: 'city',
+  postalCode: 'postalCode',
+  country: 'country',
+  clientName: 'clientName',
+  clientEmail: 'clientEmail',
+  clientAddress: 'clientAddress',
+  clientCity: 'clientCity',
+  clientPostalCode: 'clientPostalCode',
+  clientCountry: 'clientCountry',
+  invoiceDate: 'invoiceDate',
+  paymentTerms: 'paymentTerms',
+  dueDate: 'dueDate',
+  description: 'description',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  total: 'total'
+};
+
+exports.Prisma.InvoiceItemScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  name: 'name',
+  quantity: 'quantity',
+  price: 'price',
+  total: 'total',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -143,9 +177,42 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = {
   lastName: 'lastName'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
+exports.Prisma.InvoiceOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  address: 'address',
+  city: 'city',
+  postalCode: 'postalCode',
+  country: 'country',
+  clientName: 'clientName',
+  clientEmail: 'clientEmail',
+  clientAddress: 'clientAddress',
+  clientCity: 'clientCity',
+  clientPostalCode: 'clientPostalCode',
+  clientCountry: 'clientCountry',
+  description: 'description'
+};
+
+exports.Prisma.InvoiceItemOrderByRelevanceFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  name: 'name'
+};
+exports.InvoiceStatus = exports.$Enums.InvoiceStatus = {
+  DRAFT: 'DRAFT',
+  PENDING: 'PENDING',
+  PAID: 'PAID'
+};
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Invoice: 'Invoice',
+  InvoiceItem: 'InvoiceItem'
 };
 
 /**

@@ -15,11 +15,55 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique    @db.VarChar(320)
+  id        String    @id @default(uuid())
+  email     String    @unique @db.VarChar(320)
   password  String
-  name      String   @db.VarChar(50)
-  lastName  String   @db.VarChar(50)
+  name      String    @db.VarChar(50)
+  lastName  String    @db.VarChar(50)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  invoices  Invoice[]
+}
+
+model Invoice {
+  id              String   @id @default(uuid())
+  userId          String
+  address         String   @db.VarChar(255)
+  city            String   @db.VarChar(100)
+  postalCode      String   @db.VarChar(20)
+  country         String   @db.VarChar(100)
+  clientName      String   @db.VarChar(100)
+  clientEmail     String   @db.VarChar(320)
+  clientAddress   String   @db.VarChar(255)
+  clientCity      String   @db.VarChar(100)
+  clientPostalCode String  @db.VarChar(20)
+  clientCountry   String   @db.VarChar(100)
+  invoiceDate     DateTime
+  paymentTerms    Int      // Nombre de jours (1, 7, 14, 30)
+  dueDate         DateTime
+  description     String   @db.VarChar(255)
+  status          InvoiceStatus @default(PENDING)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id])
+  items           InvoiceItem[]
+  total           Float?   // Montant total de la facture
+}
+
+model InvoiceItem {
+  id        String   @id @default(uuid())
+  invoiceId String
+  name      String   @db.VarChar(100)
+  quantity  Int
+  price     Float
+  total     Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  invoice   Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+}
+
+enum InvoiceStatus {
+  DRAFT
+  PENDING
+  PAID
 }

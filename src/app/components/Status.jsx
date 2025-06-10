@@ -1,19 +1,19 @@
 export default function Status({ status }) {
     const getStatusConfig = (status) => {
         switch (status) {
-            case 'Payée':
+            case 'PAID':
                 return {
                     textColor: 'text-green-1',
                     bgColor: 'bg-green-light',
                     dotColor: 'bg-green-1'
                 };
-            case 'En attente':
+            case 'PENDING':
                 return {
                     textColor: 'text-orange-1',
                     bgColor: 'bg-orange-light',
                     dotColor: 'bg-orange-1'
                 };
-            case 'Brouillon':
+            case 'DRAFT':
                 return {
                     textColor: 'text-dark-light',
                     bgColor: 'bg-gray-super-light',

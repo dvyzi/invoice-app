@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import Invoice from "@components/invoice";
 import NewInvoicePopup from "./components/forms/new-invoice-popup";
 
+
 const FilterDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
@@ -15,6 +16,7 @@ const FilterDropdown = () => {
     pending: false,
     draft: false
   });
+
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
@@ -92,6 +94,7 @@ const FilterDropdown = () => {
 const Page = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false)
 
+
   const [isAuthentificated, setIsAuthentificated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [email, setEmail] = useState('')
@@ -107,6 +110,24 @@ const Page = () => {
 
   const [isRegister, setIsRegister] = useState(false)
   const [text, setText] = useState('Pas encore inscrit ? cliquez ici pour vous inscrire !')
+  const [invoices, setInvoices] = useState([])
+
+  useEffect(() => {
+    const fetchInvoice = () => {
+      fetch('/api/invoices/all')
+        .then(response => response.json())
+        .then(data => {
+          setInvoices(data.invoices.map(invoice => {
+            const date = new Date(invoice.dueDate);
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            const formattedDate = date.toLocaleDateString('fr-FR', options);
+            return { ...invoice, dueDate: formattedDate }
+          }));
+        })
+        .catch(error => console.error('Erreur lors de la récupération des factures:', error));
+    }
+    fetchInvoice();
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -148,7 +169,7 @@ const Page = () => {
         });
 
         const data = await response.json();
-        
+
         if (data.error) {
           if (data.fields) {
             data.fields.forEach(element => {
@@ -197,7 +218,7 @@ const Page = () => {
         });
 
         const data = await response.json();
-        
+
         if (response.ok) {
           // Connexion réussie - rediriger vers la page d'accueil
           window.location.href = '/';
@@ -322,7 +343,7 @@ const Page = () => {
         </div>
       ) : (
         <>
-          <div className='flex flex-col gap-16'>
+          <div className='flex flex-col gap-16 pt-10 lg:pt-0'>
             <div className='flex justify-between items-center'>
               <div className='flex flex-col gap-[6px]'>
                 <h1 className='text-heading-m md:text-heading-l'>Factures</h1>
@@ -346,109 +367,25 @@ const Page = () => {
               </div>
             </div>
             <div className='flex flex-col gap-4'>
-              <Invoice
-                id='RT3080'
-                name='Jules Wyvern'
-                date='19 Décembre'
-                dateYear='2025'
-                total='1,800.90'
-                status='Payée'
-              />
-              <Invoice
-                id='RT3080'
-                name='Jules Wyvern'
-                date='19 Décembre'
-                dateYear='2025'
-                total='1,800.90'
-                status='En attente'
-              />
-              <Invoice
-                id='RT3080'
-                name='Jules Wyvern'
-                date='19 Décembre'
-                dateYear='2025'
-                total='1,800.90'
-                status='Brouillon'
-              />
-              <Invoice
-                id='RT3080'
-                name='Jules Wyvern'
-                date='19 Décembre'
-                dateYear='2025'
-                total='1,800.90'
-                status='Payée'
-              />
-              <Invoice
-                id='RT3080'
-                name='Jules Wyvern'
-                date='19 Décembre'
-                dateYear='2025'
-                total='1,800.90'
-                status='En attente'
-              />
-              <Invoice
-                id='RT3080'
-                name='Jules Wyvern'
-                date='19 Décembre'
-                dateYear='2025'
-                total='1,800.90'
-                status='Brouillon'
-              />
-              <Invoice
-                id='RT3080'
-                name='Jules Wyvern'
-                date='19 Décembre'
-                dateYear='2025'
-                total='1,800.90'
-                status='Payée'
-              />
-              <Invoice
-                id='RT3080'
-                name='Jules Wyvern'
-                date='19 Décembre'
-                dateYear='2025'
-                total='1,800.90'
-                status='En attente'
-              />
-              <Invoice
-                id='RT3080'
-                name='Jules Wyvern'
-                date='19 Décembre'
-                dateYear='2025'
-                total='1,800.90'
-                status='Brouillon'
-              />
-              <Invoice
-                id='RT3080'
-                name='Jules Wyvern'
-                date='19 Décembre'
-                dateYear='2025'
-                total='1,800.90'
-                status='Payée'
-              />
-              <Invoice
-                id='RT3080'
-                name='Jules Wyvern'
-                date='19 Décembre'
-                dateYear='2025'
-                total='1,800.90'
-                status='En attente'
-              />
-              <Invoice
-                id='RT3080'
-                name='Jules Wyvern'
-                date='19 Décembre'
-                dateYear='2025'
-                total='1,800.90'
-                status='Brouillon'
-              />
+              {invoices && invoices.length > 0 ? invoices.map(invoice => (
+                <Invoice
+                  key={invoice.id}
+                  id={invoice.id.slice(0, 8).toUpperCase()}
+                  name={invoice.clientName}
+                  date={invoice.dueDate}
+                  total={invoice.total}
+                  status={invoice.status}
+                />
+              )) : (
+                <div className="flex items-center flex-col gap-4 w-60 mx-auto h-[calc(100vh-300px)] justify-center overflow-hidden">
+                  <Image src="/nothing-here.svg" alt="empty-state" width={240} height={200} />
+                  <h2 className="text-heading-m text-dark-2">Il n'y a rien ici</h2>
+                  <p className="text-body text-gray-2">  Créez une facture en cliquant sur le bouton <span className="text-body-bold">Nouvelle facture</span> et commencez à travailler</p>
+                </div>
+              )}
             </div>
           </div>
-          {/* <div className="flex items-center flex-col gap-4 w-60 mx-auto min-h-[calc(100vh-200px)] justify-center">
-                <Image src="/nothing-here.svg" alt="empty-state" width={240} height={200} />
-                <h2 className="text-heading-m text-dark-2">Il n'y a rien ici</h2>
-                <p className="text-body text-gray-2">  Créez une facture en cliquant sur le bouton <span className="text-body-bold">Nouvelle facture</span> et commencez à travailler</p>
-            </div> */}
+
           <NewInvoicePopup
             isOpen={isPopupOpen}
             onClose={() => setIsPopupOpen(false)}

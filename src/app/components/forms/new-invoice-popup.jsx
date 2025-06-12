@@ -275,7 +275,6 @@ useEffect(() => {
         isDraft: isDraft
       };
 
-      console.log(JSON.stringify(invoiceData));
       // Envoi à l'API
       const response = await fetch('/api/invoices', {
         method: 'POST',
@@ -290,7 +289,6 @@ useEffect(() => {
       const result = await response.json();
 
       if (result.success) {
-        console.log('Facture enregistrée avec succès', result.invoice);
         handleClose();
         // TODO: Ajouter une notification de succès ou redirection
       } else {

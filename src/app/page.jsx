@@ -199,7 +199,6 @@ const Page = () => {
           // Inscription réussie - passer en mode connexion
           setIsRegister(false);
           setText('Pas encore inscrit ? cliquez ici pour vous inscrire !');
-          alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
         }
       } catch (error) {
         console.error('Erreur lors de l\'inscription:', error);

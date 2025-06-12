@@ -369,7 +369,7 @@ const Page = () => {
               {invoices && invoices.length > 0 ? invoices.map(invoice => (
                 <Invoice
                   key={invoice.id}
-                  id={invoice.id.slice(0, 8).toUpperCase()}
+                  id={invoice.id}
                   name={invoice.clientName}
                   date={invoice.dueDate}
                   total={invoice.total}

@@ -11,11 +11,22 @@ import { useEffect, useState } from 'react';
 
 function ProductItem({ name, quantity, price, total }) {
     return (
-        <div className='grid grid-cols-4 w-full pb-6'>
-            <p className='text-heading-s text-dark-2'>{name}</p>
-            <p className='text-heading-s text-dark-gray text-center'>{quantity}</p>
-            <p className='text-heading-s text-dark-gray text-center'>{price} €</p>
-            <p className='text-heading-s text-dark-2 text-right'>{total} €</p>
+        <div className='md:grid md:grid-cols-4 w-full pb-6 '>
+            <div className='flex justify-between items-center md:hidden'>
+                <div className='flex flex-col gap-2'>
+                    <p className='text-heading-s text-dark-2'>{name}</p>
+                    <div className='flex flex-row gap-1'>
+                        <p className='text-heading-s text-dark-gray text-center'>{quantity}</p>
+                        <p className='text-heading-s text-dark-gray text-center'>x</p>
+                        <p className='text-heading-s text-dark-gray text-center'>{price} €</p>
+                    </div>
+                </div>
+                <p className='text-heading-s text-dark-2 text-right'>{total} €</p>
+            </div>
+            <p className='text-heading-s text-dark-2 hidden md:block'>{name}</p>
+            <p className='text-heading-s text-dark-gray text-center hidden md:block'>{quantity}</p>
+            <p className='text-heading-s text-dark-gray text-center hidden md:block'>{price} €</p>
+            <p className='text-heading-s text-dark-2 text-right hidden md:block'>{total} €</p>
         </div>
     )
 }
@@ -72,15 +83,15 @@ const InvoicePage = () => {
                         <div className="flex items-center justify-between bg-white rounded-lg p-6">
                             <div className="flex items-center w-full md:w-auto justify-between md:gap-7">
                                 <p className="text-body text-dark-gray">Statut</p>
-                                <Status status="En attente" />
+                                <Status status={invoice.status} />
                             </div>
                             <div className="hidden md:flex flex-row items-center gap-4">
                                 <Buttons type="secondary">Modifier</Buttons>
-                                <Buttons type="delete" >Supprimer</Buttons>
+                                <Buttons type="delete" onPress={invoice.id}>Supprimer</Buttons>
                                 <Buttons type="primary">Marquer comme payé</Buttons>
                             </div>
                         </div>
-                        <div className='bg-white rounded-lg p-12 my-5 flex flex-col gap-6'>
+                        <div className='bg-white rounded-lg p-5 mb-20 md:p-12 my-5 flex flex-col gap-6'>
                             <div className='flex flex-col gap-5 md:flex-row md:justify-between md:items-center'>
                                 <div className='flex flex-col gap-1 md:gap-2'>
                                     <p className='text-heading-s text-dark-2'><span className='text-muted-dark text-heading-s'>#</span>{invoice.id.slice(0, 8).toUpperCase()}</p>
@@ -123,29 +134,35 @@ const InvoicePage = () => {
                                 <p className='text-body text-dark-gray'>Envoyé à</p>
                                 <p className='text-heading-s text-dark-2'>{invoice.clientEmail}</p>
                             </div>
-                            <div className='flex flex-col items-center gap-2 bg-gray-light rounded-lg p-10 mt-6'>
-                                <div className='grid grid-cols-4 w-full pb-8'>
-                                    <p className='text-body text-dark-gray'>Nom du produit</p>
-                                    <p className='text-body text-dark-gray text-center'>QTE.</p>
-                                    <p className='text-body text-dark-gray text-center'>Prix</p>
-                                    <p className='text-body text-dark-gray text-right'>Total</p>
+                            <div>
+                                <div className='flex flex-col items-center gap-2 bg-gray-light rounded-t-lg p-2 md:p-10 md:mt-6'>
+                                    <div className='grid grid-cols-4 w-full pb-8'>
+                                        <p className='text-body text-dark-gray hidden md:block'>Nom du produit</p>
+                                        <p className='text-body text-dark-gray text-center hidden md:block'>QTE.</p>
+                                        <p className='text-body text-dark-gray text-center hidden md:block'>Prix</p>
+                                        <p className='text-body text-dark-gray text-right hidden md:block'>Total</p>
+                                    </div>
+                                    {invoice.items && invoice.items.map((item, index) => (
+                                        <ProductItem
+                                            key={index}
+                                            name={item.name}
+                                            quantity={item.quantity}
+                                            price={item.price}
+                                            total={item.total}
+                                        />
+                                    ))}
                                 </div>
-                                {invoice.items && invoice.items.map((item, index) => (
-                                    <ProductItem
-                                        key={index}
-                                        name={item.name}
-                                        quantity={item.quantity}
-                                        price={item.price}
-                                        total={item.total}
-                                    />
-                                ))}
+                                <div className='bg-dark-light p-8 rounded-b-lg flex justify-between items-center'>
+                                    <p className='text-body text-primary-foreground'>Total à payer</p>
+                                    <p className='text-heading-m text-primary-foreground'>{invoice.total} €</p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div className='md:hidden flex justify-between items-center gap-1 w-full bg-white rounded-lg p-4 fixed bottom-0 left-0 right-0'>
                         <Buttons type="secondary">Modifier</Buttons>
-                        <Buttons type="delete" >Supprimer</Buttons>
+                        <Buttons type="delete" onPress={invoice.id}>Supprimer</Buttons>
                         <Buttons type="primary">Marquer comme payé</Buttons>
                     </div>
                 </div>
@@ -153,7 +170,6 @@ const InvoicePage = () => {
                 <div>Chargement...</div>
             )}
         </>
-
     )
 }
 

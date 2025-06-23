@@ -63,25 +63,25 @@ const ProductInputs = ({ productDetails, onProductChange, onRemove, hasError }) 
   );
 };
 
-const NewInvoicePopup = ({ isOpen, onClose }) => {
+const NewInvoicePopup = ({ isOpen, onClose, onInvoiceCreated }) => {
 
   const [userData, setUserData] = useState(null);
-// Récupérer les informations de l'utilisateur au chargement du composant
-useEffect(() => {
-  const fetchUserData = async () => {
+  // Récupérer les informations de l'utilisateur au chargement du composant
+  useEffect(() => {
+    const fetchUserData = async () => {
       try {
-          const response = await fetch('/api/user');
-          if (response.ok) {
-              const data = await response.json();
-              setUserData(data.user);
-          }
+        const response = await fetch('/api/user');
+        if (response.ok) {
+          const data = await response.json();
+          setUserData(data.user);
+        }
       } catch (error) {
-          console.error('Erreur lors de la récupération des informations utilisateur:', error);
+        console.error('Erreur lors de la récupération des informations utilisateur:', error);
       }
-  };
-  
-  fetchUserData();
-}, []);
+    };
+
+    fetchUserData();
+  }, []);
 
   const popupRef = useRef(null);
   const [isClosing, setIsClosing] = useState(false);
@@ -255,6 +255,18 @@ useEffect(() => {
 
     if (isValid) {
       await saveInvoice(false);
+      const res = await fetch('/api/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          clientEmail: formValues.clientEmail,
+          clientName: formValues.clientName
+        }),
+      });
+      const data = await res.json();
+      console.log(data);
     } else {
       console.log('Formulaire invalide', errors);
     }
@@ -289,6 +301,10 @@ useEffect(() => {
       const result = await response.json();
 
       if (result.success) {
+        // Appeler la fonction de callback si elle existe
+        if (typeof onInvoiceCreated === 'function') {
+          onInvoiceCreated();
+        }
         handleClose();
         // TODO: Ajouter une notification de succès ou redirection
       } else {

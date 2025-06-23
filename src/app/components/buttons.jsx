@@ -38,6 +38,7 @@ export default function Buttons({ type, children, onPress }) {
         }
     }
 
+
     switch (type) {
         case 'new-invoice':
             return <button onClick={onPress} className="bg-primary text-white px-2 py-2 rounded-3xl items-center gap-2 hover:bg-primary-light text-heading-s hidden md:flex"> <img src="/new.svg" alt="New Invoice" /> {children}</button>;

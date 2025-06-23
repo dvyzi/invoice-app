@@ -12,7 +12,7 @@ const FilterDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [filters, setFilters] = useState({
-    paid: false,  
+    paid: false,
     pending: false,
     draft: false
   });
@@ -112,44 +112,46 @@ const Page = () => {
   const [text, setText] = useState('Pas encore inscrit ? cliquez ici pour vous inscrire !')
   const [invoices, setInvoices] = useState([])
 
-  useEffect(() => {
-    const fetchInvoice = () => {
-      fetch('/api/invoices/all')
-        .then(response => {
-          if (!response.ok) {
-            // Si le statut est 401, l'utilisateur n'est pas authentifié
-            if (response.status === 401) {
-              setIsAuthentificated(false);
-              setIsLoading(false);
-              throw new Error('Non authentifié');
-            }
-            throw new Error('Erreur réseau');
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (data.success) {
-            const formattedInvoices = data.invoices.map(invoice => {
-              const date = new Date(invoice.dueDate);
-              const options = { day: 'numeric', month: 'long', year: 'numeric' };
-              const formattedDate = date.toLocaleDateString('fr-FR', options);
-              return { ...invoice, dueDate: formattedDate }
-            });
-            setInvoices(formattedInvoices);
-            setIsAuthentificated(true);
-            setIsLoading(false);
-          } else {
-            console.error('Erreur:', data.message);
-          }
-        })
-        .catch(error => {
-          console.error('Erreur lors de la récupération des factures:', error);
-          if (error.message === 'Non authentifié') {
+
+  const fetchInvoice = () => {
+    fetch('/api/invoices/all')
+      .then(response => {
+        if (!response.ok) {
+          // Si le statut est 401, l'utilisateur n'est pas authentifié
+          if (response.status === 401) {
             setIsAuthentificated(false);
+            setIsLoading(false);
+            throw new Error('Non authentifié');
           }
+          throw new Error('Erreur réseau');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          const formattedInvoices = data.invoices.map(invoice => {
+            const date = new Date(invoice.dueDate);
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            const formattedDate = date.toLocaleDateString('fr-FR', options);
+            return { ...invoice, dueDate: formattedDate }
+          });
+          setInvoices(formattedInvoices);
+          setIsAuthentificated(true);
           setIsLoading(false);
-        });
-    }
+        } else {
+          console.error('Erreur:', data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des factures:', error);
+        if (error.message === 'Non authentifié') {
+          setIsAuthentificated(false);
+        }
+        setIsLoading(false);
+      });
+  }
+  
+  useEffect(() => {
     fetchInvoice();
   }, []);
 
@@ -412,6 +414,7 @@ const Page = () => {
           <NewInvoicePopup
             isOpen={isPopupOpen}
             onClose={() => setIsPopupOpen(false)}
+            onInvoiceCreated={fetchInvoice}
           />
         </>
       )}

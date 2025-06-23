@@ -8,32 +8,34 @@ export default function Buttons({ type, children, onPress }) {
      * - Recharge la page après suppression réussie
      */
     const handleDeleteInvoice = () => {
-        // Vérification de sécurité: onPress doit être un ID valide
-        if (typeof onPress !== 'string' && typeof onPress !== 'number') {
-            return; // Arrêt si l'ID n'est pas valide
+        if (confirm("Confirmez vous la supression de cette facture ?")) {
+            // Vérification de sécurité: onPress doit être un ID valide
+            if (typeof onPress !== 'string' && typeof onPress !== 'number') {
+                return; // Arrêt si l'ID n'est pas valide
+            }
+
+            // Appel à l'API pour supprimer la facture
+            fetch('/api/invoices/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: onPress }), // Envoi de l'ID dans le corps de la requête
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erreur réseau: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Rediriger vers la page d'accueil après suppression réussie
+                        window.location.href = '/';
+                    }
+                })
+                .catch(error => { /* Gestion silencieuse des erreurs */ });
         }
-        
-        // Appel à l'API pour supprimer la facture
-        fetch('/api/invoices/delete', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id: onPress }), // Envoi de l'ID dans le corps de la requête
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erreur réseau: ' + response.status);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                // Rediriger vers la page d'accueil après suppression réussie
-                window.location.href = '/';
-            }
-        })
-        .catch(error => { /* Gestion silencieuse des erreurs */ });
     }
 
     switch (type) {

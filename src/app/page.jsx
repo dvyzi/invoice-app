@@ -12,7 +12,7 @@ const FilterDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [filters, setFilters] = useState({
-    paid: false,
+    paid: false,  
     pending: false,
     draft: false
   });
@@ -115,16 +115,40 @@ const Page = () => {
   useEffect(() => {
     const fetchInvoice = () => {
       fetch('/api/invoices/all')
-        .then(response => response.json())
-        .then(data => {
-          setInvoices(data.invoices.map(invoice => {
-            const date = new Date(invoice.dueDate);
-            const options = { day: 'numeric', month: 'long', year: 'numeric' };
-            const formattedDate = date.toLocaleDateString('fr-FR', options);
-            return { ...invoice, dueDate: formattedDate }
-          }));
+        .then(response => {
+          if (!response.ok) {
+            // Si le statut est 401, l'utilisateur n'est pas authentifié
+            if (response.status === 401) {
+              setIsAuthentificated(false);
+              setIsLoading(false);
+              throw new Error('Non authentifié');
+            }
+            throw new Error('Erreur réseau');
+          }
+          return response.json();
         })
-        .catch(error => console.error('Erreur lors de la récupération des factures:', error));
+        .then(data => {
+          if (data.success) {
+            const formattedInvoices = data.invoices.map(invoice => {
+              const date = new Date(invoice.dueDate);
+              const options = { day: 'numeric', month: 'long', year: 'numeric' };
+              const formattedDate = date.toLocaleDateString('fr-FR', options);
+              return { ...invoice, dueDate: formattedDate }
+            });
+            setInvoices(formattedInvoices);
+            setIsAuthentificated(true);
+            setIsLoading(false);
+          } else {
+            console.error('Erreur:', data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Erreur lors de la récupération des factures:', error);
+          if (error.message === 'Non authentifié') {
+            setIsAuthentificated(false);
+          }
+          setIsLoading(false);
+        });
     }
     fetchInvoice();
   }, []);
@@ -347,7 +371,7 @@ const Page = () => {
               <div className='flex flex-col gap-[6px]'>
                 <h1 className='text-heading-m md:text-heading-l'>Factures</h1>
                 <p className='text-heading-s-nobold text-gray-2'>
-                  <span className='hidden md:inline'>Il y a </span>7 factures
+                  <span className='hidden md:inline'>Il y a </span>{invoices.length} facture{invoices.length !== 1 ? 's' : ''}
                   <span className='hidden md:inline'> au total</span>
                 </p>
               </div>

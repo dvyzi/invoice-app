@@ -74,6 +74,7 @@ const InvoicePage = () => {
         return date.toLocaleDateString('fr-FR', options);
     };
 
+
     return (
         <>
             {invoice && invoice.id ? (
@@ -88,7 +89,9 @@ const InvoicePage = () => {
                             <div className="hidden md:flex flex-row items-center gap-4">
                                 <Buttons type="secondary">Modifier</Buttons>
                                 <Buttons type="delete" onPress={invoice.id}>Supprimer</Buttons>
-                                <Buttons type="primary">Marquer comme payé</Buttons>
+                                {invoice.status === 'PENDING' && (
+                                    <Buttons type="primary" onPress={invoice.id}>Marquer comme payé</Buttons>
+                                )}
                             </div>
                         </div>
                         <div className='bg-white rounded-lg p-5 mb-20 md:p-12 my-5 flex flex-col gap-6'>
@@ -163,7 +166,9 @@ const InvoicePage = () => {
                     <div className='md:hidden flex justify-between items-center gap-1 w-full bg-white rounded-lg p-4 fixed bottom-0 left-0 right-0'>
                         <Buttons type="secondary">Modifier</Buttons>
                         <Buttons type="delete" onPress={invoice.id}>Supprimer</Buttons>
-                        <Buttons type="primary">Marquer comme payé</Buttons>
+                        {invoice.status === 'PENDING' && (
+                            <Buttons type="primary" onPress={invoice.id}>Marquer comme payé</Buttons>
+                        )}
                     </div>
                 </div>
             ) : (

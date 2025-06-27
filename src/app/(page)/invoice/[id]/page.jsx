@@ -87,7 +87,9 @@ const InvoicePage = () => {
                                 <Status status={invoice.status} />
                             </div>
                             <div className="hidden md:flex flex-row items-center gap-4">
-                                <Buttons type="secondary">Modifier</Buttons>
+                                {(invoice.status === 'PENDING' || invoice.status === "DRAFT") && (
+                                    <Buttons type="secondary">Modifier</Buttons>
+                                )}
                                 <Buttons type="delete" onPress={invoice.id}>Supprimer</Buttons>
                                 {invoice.status === 'PENDING' && (
                                     <Buttons type="primary" onPress={invoice.id}>Marquer comme payé</Buttons>

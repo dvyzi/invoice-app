@@ -8,14 +8,9 @@ import Invoice from "@components/invoice";
 import NewInvoicePopup from "./components/forms/new-invoice-popup";
 
 
-const FilterDropdown = () => {
+const FilterDropdown = ({ filters, setFilters }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
-  const [filters, setFilters] = useState({
-    paid: false,
-    pending: false,
-    draft: false
-  });
 
 
   useEffect(() => {
@@ -32,7 +27,23 @@ const FilterDropdown = () => {
   ];
 
   const toggleFilter = (id) => {
-    setFilters(prev => ({ ...prev, [id]: !prev[id] }));
+    // Créer un nouvel objet avec tous les filtres à false
+    const newFilters = {
+      paid: false,
+      pending: false,
+      draft: false
+    };
+    
+    // Si le filtre cliqué était déjà actif, tout désactiver
+    // Sinon, activer uniquement le filtre cliqué
+    if (filters[id]) {
+      // Tout reste à false (désélectionne tout)
+    } else {
+      // Active uniquement le filtre cliqué
+      newFilters[id] = true;
+    }
+    
+    setFilters(newFilters);
   };
 
   return (
@@ -93,7 +104,11 @@ const FilterDropdown = () => {
 
 const Page = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false)
-
+  const [filters, setFilters] = useState({
+    paid: false,
+    pending: false,
+    draft: false
+  });
 
   const [isAuthentificated, setIsAuthentificated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -378,7 +393,7 @@ const Page = () => {
                 </p>
               </div>
               <div className='flex items-center gap-4 md:gap-9'>
-                <FilterDropdown />
+                <FilterDropdown filters={filters} setFilters={setFilters} />
                 <Buttons
                   type='new-invoice'
                   onPress={() => setIsPopupOpen(true)}
@@ -392,7 +407,18 @@ const Page = () => {
               </div>
             </div>
             <div className='flex flex-col gap-4'>
-              {invoices && invoices.length > 0 ? invoices.map(invoice => (
+              {invoices && invoices.length > 0 ? invoices.filter(invoice => {
+                // Si aucun filtre n'est actif, afficher toutes les factures
+                const noFiltersActive = !filters.paid && !filters.pending && !filters.draft;
+                if (noFiltersActive) return true;
+                
+                // Sinon, vérifier si le statut de la facture correspond à un filtre actif
+                if (filters.paid && invoice.status === 'PAID') return true;
+                if (filters.pending && invoice.status === 'PENDING') return true;
+                if (filters.draft && invoice.status === 'DRAFT') return true;
+                
+                return false;
+              }).map(invoice => (
                 <Invoice
                   key={invoice.id}
                   id={invoice.id}

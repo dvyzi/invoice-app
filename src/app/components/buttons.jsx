@@ -96,9 +96,9 @@ export default function Buttons({ type, children, onPress, disabled }) {
                 {children}
             </button>;
         case 'secondary':
-            return <button className="bg-gray-1 text-dark-gray px-6 py-3 rounded-3xl flex items-center gap-2 hover:bg-gray-light text-heading-s">{children}</button>;
+            return <button onClick={onPress} className="bg-gray-1 text-dark-gray px-6 py-3 rounded-3xl flex items-center gap-2 hover:bg-gray-light text-heading-s">{children}</button>;
         case 'cancel':
-            return <button className="bg-gray-1 text-dark-gray px-3 py-3 rounded-3xl flex items-center gap-2 hover:bg-gray-light text-heading-s">{children}</button>;
+            return <button onClick={onPress} className="bg-gray-1 text-dark-gray px-3 py-3 rounded-3xl flex items-center gap-2 hover:bg-gray-light text-heading-s">{children}</button>;
         default:
             return <button className="bg-primary text-white px-4 py-2 rounded-md text-heading-s">{children}</button>;
         case 'tertiary':

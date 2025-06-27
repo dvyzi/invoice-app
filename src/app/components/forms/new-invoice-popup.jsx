@@ -63,7 +63,13 @@ const ProductInputs = ({ productDetails, onProductChange, onRemove, hasError }) 
   );
 };
 
-const NewInvoicePopup = ({ isOpen, onClose, onInvoiceCreated }) => {
+const NewInvoicePopup = ({
+  isOpen,
+  onClose,
+  onInvoiceCreated,
+  invoiceToEdit = null,   // Nouvelle prop pour la facture à modifier
+  isEditing = false       // Nouvelle prop pour indiquer le mode édition
+}) => {
 
   const [userData, setUserData] = useState(null);
   // Récupérer les informations de l'utilisateur au chargement du composant
@@ -128,6 +134,88 @@ const NewInvoicePopup = ({ isOpen, onClose, onInvoiceCreated }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    if (isEditing && invoiceToEdit) {
+      // Formater les dates pour l'input date (format YYYY-MM-DD)
+      const formatDateForInput = (dateString) => {
+        if (!dateString) return '';
+        try {
+          let date;
+
+          // Vérifier si la date est au format français (ex: "20 juin 2025")
+          if (typeof dateString === 'string' && dateString.includes(' ')) {
+            // Tableau de correspondance des mois en français
+            const moisFrancais = {
+              'janvier': '01', 'février': '02', 'mars': '03', 'avril': '04',
+              'mai': '05', 'juin': '06', 'juillet': '07', 'août': '08',
+              'septembre': '09', 'octobre': '10', 'novembre': '11', 'décembre': '12'
+            };
+
+            const parties = dateString.split(' ');
+            if (parties.length === 3) {
+              const jour = parties[0].padStart(2, '0');
+              const mois = moisFrancais[parties[1].toLowerCase()];
+              const annee = parties[2];
+
+              if (jour && mois && annee) {
+                // Format YYYY-MM-DD pour l'input date
+                return `${annee}-${mois}-${jour}`;
+              }
+            }
+          }
+
+          // Essayer le format standard
+          date = new Date(dateString);
+
+          // Vérifier si la date est valide
+          if (isNaN(date.getTime())) {
+            console.error('Date invalide:', dateString);
+            return '';
+          }
+
+          return date.toISOString().split('T')[0];
+        } catch (error) {
+          console.error('Erreur lors du formatage de la date:', error);
+          return '';
+        }
+      };
+
+      // Pré-remplir le formulaire avec les données de la facture
+      setFormValues({
+        address: invoiceToEdit.address || '',
+        city: invoiceToEdit.city || '',
+        postalCode: invoiceToEdit.postalCode || '',
+        country: invoiceToEdit.country || '',
+        clientName: invoiceToEdit.clientName || '',
+        clientEmail: invoiceToEdit.clientEmail || '',
+        clientAddress: invoiceToEdit.clientAddress || '',
+        clientCity: invoiceToEdit.clientCity || '',
+        clientPostalCode: invoiceToEdit.clientPostalCode || '',
+        clientCountry: invoiceToEdit.clientCountry || '',
+        invoiceDate: formatDateForInput(invoiceToEdit.invoiceDate) || '',
+        projectDescription: invoiceToEdit.description || ''
+      });
+
+      // Pré-remplir les produits
+      if (invoiceToEdit.items && invoiceToEdit.items.length > 0) {
+        setProducts(invoiceToEdit.items.map(item => ({
+          name: item.name || '',
+          quantity: item.quantity || '',
+          price: item.price || '',
+          total: item.total || ''
+        })));
+      }
+
+      // Pré-sélectionner les termes de paiement
+      setTimeout(() => {
+        const paymentTermsSelect = document.getElementById('paymentTerms');
+        if (paymentTermsSelect && invoiceToEdit.paymentTerms) {
+          paymentTermsSelect.value = invoiceToEdit.paymentTerms;
+        }
+      }, 0);
+    }
+  }, [isEditing, invoiceToEdit]);
 
   const handleClose = () => {
     setIsClosing(true);
@@ -277,7 +365,6 @@ const NewInvoicePopup = ({ isOpen, onClose, onInvoiceCreated }) => {
    * @param {boolean} isDraft - Indique si c'est un brouillon
    */
   const saveInvoice = async (isDraft) => {
-
     try {
       // Préparation des données
       const invoiceData = {
@@ -287,16 +374,22 @@ const NewInvoicePopup = ({ isOpen, onClose, onInvoiceCreated }) => {
         isDraft: isDraft
       };
 
+      // URL et méthode différentes selon création ou modification
+      const url = isEditing
+        ? `/api/invoices/${invoiceToEdit.id}` // Endpoint de mise à jour
+        : '/api/invoices';                    // Endpoint de création
+
+      const method = isEditing ? 'PUT' : 'POST';
+
       // Envoi à l'API
-      const response = await fetch('/api/invoices', {
-        method: 'POST',
+      const response = await fetch(url, {
+        method: method,
         headers: {
-          'userId': userData.id,
+          'userId': userData?.id,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(invoiceData),
       });
-
 
       const result = await response.json();
 
@@ -306,16 +399,21 @@ const NewInvoicePopup = ({ isOpen, onClose, onInvoiceCreated }) => {
           onInvoiceCreated();
         }
         handleClose();
-        // TODO: Ajouter une notification de succès ou redirection
       } else {
         console.error('Erreur lors de l\'enregistrement de la facture', result.error);
-        // TODO: Afficher un message d'erreur à l'utilisateur
       }
     } catch (error) {
       console.error('Erreur lors de l\'envoi des données', error);
-      // TODO: Afficher un message d'erreur à l'utilisateur
     }
   };
+
+  // Ajouter avant le return
+  const popupTitle = isEditing
+    ? 'Modifier la facture'
+    : 'Nouvelle Facture';
+
+  const invoiceNumber = isEditing ? invoiceToEdit?.id?.slice(0, 8).toUpperCase() : null;
+
 
   if (!isOpen && !isClosing) return null;
 
@@ -333,7 +431,16 @@ const NewInvoicePopup = ({ isOpen, onClose, onInvoiceCreated }) => {
             <X size={24} />
           </button>
 
-          <h2 className="text-heading-m text-dark-2 mb-8">Nouvelle Facture</h2>
+          <h2 className="text-heading-m text-dark-2 mb-8">
+            {popupTitle} {isEditing && (
+              <span>
+                <br />
+                <br />
+                <span className="text-dark-gray text-heading-s">#</span>
+                <span className="font-bold text-heading-s">{invoiceNumber}</span>
+              </span>
+            )}
+          </h2>
 
           <form className="space-y-8" onSubmit={(e) => handleSubmit(e)}>
             <div>
@@ -564,12 +671,15 @@ const NewInvoicePopup = ({ isOpen, onClose, onInvoiceCreated }) => {
                 Annuler
               </Buttons>
               <div className='flex gap-4'>
-                <Buttons
-                  type="tertiary"
-                  onPress={(e) => handleSubmit(e, true)}
-                >
-                  Brouillon
-                </Buttons>
+                {/* Toujours afficher le bouton Brouillon pour les nouvelles factures ou les factures existantes non payées */}
+                {(!isEditing || (isEditing && invoiceToEdit?.status === "DRAFT")) && (
+                  <Buttons
+                    type="tertiary"
+                    onPress={(e) => handleSubmit(e, true)}
+                  >
+                    Brouillon
+                  </Buttons>
+                )}
                 <Buttons
                   type="primary"
                   onPress={(e) => handleSubmit(e)}

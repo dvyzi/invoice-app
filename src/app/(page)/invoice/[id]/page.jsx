@@ -6,6 +6,7 @@ import Link from "next/link";
 import Status from "@components/Status";
 import Buttons from "@components/buttons";
 import { useEffect, useState } from 'react';
+import NewInvoicePopup from "@components/forms/new-invoice-popup";
 
 
 
@@ -32,6 +33,7 @@ function ProductItem({ name, quantity, price, total }) {
 }
 const InvoicePage = () => {
 
+    const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
     const params = useParams();
     const id = params.id; // Récupère l'ID depuis l'URL
 
@@ -88,7 +90,12 @@ const InvoicePage = () => {
                             </div>
                             <div className="hidden md:flex flex-row items-center gap-4">
                                 {(invoice.status === 'PENDING' || invoice.status === "DRAFT") && (
-                                    <Buttons type="secondary">Modifier</Buttons>
+                                    <Buttons
+                                        type="secondary"
+                                        onPress={() => setIsEditPopupOpen(true)}
+                                    >
+                                        Modifier
+                                    </Buttons>
                                 )}
                                 <Buttons type="delete" onPress={invoice.id}>Supprimer</Buttons>
                                 {invoice.status === 'PENDING' && (
@@ -166,7 +173,14 @@ const InvoicePage = () => {
                     </div>
 
                     <div className='md:hidden flex justify-between items-center gap-1 w-full bg-white rounded-lg p-4 fixed bottom-0 left-0 right-0'>
-                        <Buttons type="secondary">Modifier</Buttons>
+                        {(invoice.status === 'PENDING' || invoice.status === "DRAFT") && (
+                            <Buttons
+                                type="secondary"
+                                onPress={() => setIsEditPopupOpen(true)}
+                            >
+                                Modifier
+                            </Buttons>
+                        )}
                         <Buttons type="delete" onPress={invoice.id}>Supprimer</Buttons>
                         {invoice.status === 'PENDING' && (
                             <Buttons type="primary" onPress={invoice.id}>Marquer comme payé</Buttons>
@@ -176,6 +190,20 @@ const InvoicePage = () => {
             ) : (
                 <div>Chargement...</div>
             )}
+            {
+                isEditPopupOpen && (
+                    <NewInvoicePopup
+                        isOpen={isEditPopupOpen}
+                        onClose={() => setIsEditPopupOpen(false)}
+                        onInvoiceCreated={() => {
+                            // Rafraîchir les données après modification
+                            window.location.reload();
+                        }}
+                        invoiceToEdit={invoice}
+                        isEditing={true}
+                    />
+                )
+            }
         </>
     )
 }

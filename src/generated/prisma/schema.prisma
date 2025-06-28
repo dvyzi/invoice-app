@@ -26,28 +26,32 @@ model User {
 }
 
 model Invoice {
-  id               String        @id @default(uuid())
-  userId           String
-  address          String        @db.VarChar(255)
-  city             String        @db.VarChar(100)
-  postalCode       String        @db.VarChar(20)
-  country          String        @db.VarChar(100)
-  clientName       String        @db.VarChar(100)
-  clientEmail      String        @db.VarChar(320)
-  clientAddress    String        @db.VarChar(255)
-  clientCity       String        @db.VarChar(100)
-  clientPostalCode String        @db.VarChar(20)
-  clientCountry    String        @db.VarChar(100)
-  invoiceDate      DateTime
-  paymentTerms     Int // Nombre de jours (1, 7, 14, 30)
-  dueDate          DateTime
-  description      String        @db.VarChar(255)
-  status           InvoiceStatus @default(DRAFT)
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  user             User          @relation(fields: [userId], references: [id])
-  items            InvoiceItem[]
-  total            Float? // Montant total de la facture
+  id                 String        @id @default(uuid())
+  userId             String
+  address            String        @db.VarChar(255)
+  city               String        @db.VarChar(100)
+  postalCode         String        @db.VarChar(20)
+  country            String        @db.VarChar(100)
+  clientName         String        @db.VarChar(100)
+  clientEmail        String        @db.VarChar(320)
+  clientAddress      String        @db.VarChar(255)
+  clientCity         String        @db.VarChar(100)
+  clientPostalCode   String        @db.VarChar(20)
+  clientCountry      String        @db.VarChar(100)
+  invoiceDate        DateTime
+  paymentTerms       Int // Nombre de jours (1, 7, 14, 30)
+  dueDate            DateTime
+  description        String        @db.VarChar(255)
+  status             InvoiceStatus @default(DRAFT)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  user               User          @relation(fields: [userId], references: [id])
+  items              InvoiceItem[]
+  total              Float? // Montant total de la facture
+  accessPasswordHash String? // Haché avec bcrypt
+  signature          String?       @db.LongText // Signature en base64
+  isSigned           Boolean       @default(false) // Indique si la facture a été signée
+  signatureDate      DateTime? // Date de signature
 }
 
 model InvoiceItem {

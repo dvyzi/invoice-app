@@ -342,19 +342,28 @@ const NewInvoicePopup = ({
     const isValid = validateForm();
 
     if (isValid) {
-      await saveInvoice(false);
-      const res = await fetch('/api/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          clientEmail: formValues.clientEmail,
-          clientName: formValues.clientName
-        }),
-      });
-      const data = await res.json();
-      console.log(data);
+      // Sauvegarder la facture et récupérer le résultat
+      const invoiceResult = await saveInvoice(false);
+      
+      // Vérifier si nous avons un ID de facture valide
+      if (invoiceResult && invoiceResult.invoice && invoiceResult.invoice.id) {
+        // Envoyer l'email avec l'ID de la facture
+        const res = await fetch('/api/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            clientEmail: formValues.clientEmail,
+            clientName: formValues.clientName,
+            invoiceId: invoiceResult.invoice.id
+          }),
+        });
+        const data = await res.json();
+        console.log('Résultat de l\'envoi d\'email:', data);
+      } else {
+        console.error('Impossible d\'envoyer l\'email: ID de facture non disponible');
+      }
     } else {
       console.log('Formulaire invalide', errors);
     }
@@ -363,6 +372,7 @@ const NewInvoicePopup = ({
   /**
    * Envoie les données de la facture à l'API
    * @param {boolean} isDraft - Indique si c'est un brouillon
+   * @returns {Promise<Object|null>} - Résultat de la création/modification de la facture
    */
   const saveInvoice = async (isDraft) => {
     try {
@@ -399,11 +409,14 @@ const NewInvoicePopup = ({
           onInvoiceCreated();
         }
         handleClose();
+        return result; // Retourner le résultat pour pouvoir récupérer l'ID de la facture
       } else {
         console.error('Erreur lors de l\'enregistrement de la facture', result.error);
+        return null;
       }
     } catch (error) {
       console.error('Erreur lors de l\'envoi des données', error);
+      return null;
     }
   };
 

@@ -6,7 +6,7 @@ import Status from '@components/Status';
 export default function Invoice({ id, displayId, name, date, total, status }) {
 
     return (
-        <Link href={`/invoice/${id}`} className="flex items-center justify-between w-full bg-white rounded-lg p-6 lg:hover:cursor-pointer lg:hover:outline lg:hover:outline-primary-light lg:hover:outline-1">
+        <Link href={`/admin-invoice/${id}`} className="flex items-center justify-between w-full bg-white rounded-lg p-6 lg:hover:cursor-pointer lg:hover:outline lg:hover:outline-primary-light lg:hover:outline-1">
             <div className='flex flex-col gap-3 md:flex-row md:items-center md:gap-6'>
                 <p className="text-heading-s text-dark-2 pb-3 md:pb-0"><span className='text-muted-dark text-heading-s'>#</span>{displayId || id.slice(0, 8).toUpperCase()}</p>
                 <p className="text-heading-s-nobold text-dark-gray"><span className='text-gray-2 text-heading-s-nobold pr-2'>Échéance</span>{date}</p>

@@ -48,6 +48,10 @@ model Invoice {
   user            User     @relation(fields: [userId], references: [id])
   items           InvoiceItem[]
   total           Float?   // Montant total de la facture
+  accessPasswordHash String? // Haché avec bcrypt
+  signature       String?  @db.LongText // Signature en base64
+  isSigned        Boolean  @default(false) // Indique si la facture a été signée
+  signatureDate   DateTime? // Date de signature
 }
 
 model InvoiceItem {

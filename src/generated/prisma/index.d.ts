@@ -2126,6 +2126,10 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     total: number | null
+    accessPasswordHash: string | null
+    signature: string | null
+    isSigned: boolean | null
+    signatureDate: Date | null
   }
 
   export type InvoiceMaxAggregateOutputType = {
@@ -2149,6 +2153,10 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     total: number | null
+    accessPasswordHash: string | null
+    signature: string | null
+    isSigned: boolean | null
+    signatureDate: Date | null
   }
 
   export type InvoiceCountAggregateOutputType = {
@@ -2172,6 +2180,10 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     total: number
+    accessPasswordHash: number
+    signature: number
+    isSigned: number
+    signatureDate: number
     _all: number
   }
 
@@ -2207,6 +2219,10 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     total?: true
+    accessPasswordHash?: true
+    signature?: true
+    isSigned?: true
+    signatureDate?: true
   }
 
   export type InvoiceMaxAggregateInputType = {
@@ -2230,6 +2246,10 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     total?: true
+    accessPasswordHash?: true
+    signature?: true
+    isSigned?: true
+    signatureDate?: true
   }
 
   export type InvoiceCountAggregateInputType = {
@@ -2253,6 +2273,10 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     total?: true
+    accessPasswordHash?: true
+    signature?: true
+    isSigned?: true
+    signatureDate?: true
     _all?: true
   }
 
@@ -2363,6 +2387,10 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     total: number | null
+    accessPasswordHash: string | null
+    signature: string | null
+    isSigned: boolean
+    signatureDate: Date | null
     _count: InvoiceCountAggregateOutputType | null
     _avg: InvoiceAvgAggregateOutputType | null
     _sum: InvoiceSumAggregateOutputType | null
@@ -2405,6 +2433,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     total?: boolean
+    accessPasswordHash?: boolean
+    signature?: boolean
+    isSigned?: boolean
+    signatureDate?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     items?: boolean | Invoice$itemsArgs<ExtArgs>
     _count?: boolean | InvoiceCountOutputTypeDefaultArgs<ExtArgs>
@@ -2433,9 +2465,13 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     total?: boolean
+    accessPasswordHash?: boolean
+    signature?: boolean
+    isSigned?: boolean
+    signatureDate?: boolean
   }
 
-  export type InvoiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "address" | "city" | "postalCode" | "country" | "clientName" | "clientEmail" | "clientAddress" | "clientCity" | "clientPostalCode" | "clientCountry" | "invoiceDate" | "paymentTerms" | "dueDate" | "description" | "status" | "createdAt" | "updatedAt" | "total", ExtArgs["result"]["invoice"]>
+  export type InvoiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "address" | "city" | "postalCode" | "country" | "clientName" | "clientEmail" | "clientAddress" | "clientCity" | "clientPostalCode" | "clientCountry" | "invoiceDate" | "paymentTerms" | "dueDate" | "description" | "status" | "createdAt" | "updatedAt" | "total" | "accessPasswordHash" | "signature" | "isSigned" | "signatureDate", ExtArgs["result"]["invoice"]>
   export type InvoiceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     items?: boolean | Invoice$itemsArgs<ExtArgs>
@@ -2469,6 +2505,10 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       total: number | null
+      accessPasswordHash: string | null
+      signature: string | null
+      isSigned: boolean
+      signatureDate: Date | null
     }, ExtArgs["result"]["invoice"]>
     composites: {}
   }
@@ -2860,6 +2900,10 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Invoice", 'DateTime'>
     readonly updatedAt: FieldRef<"Invoice", 'DateTime'>
     readonly total: FieldRef<"Invoice", 'Float'>
+    readonly accessPasswordHash: FieldRef<"Invoice", 'String'>
+    readonly signature: FieldRef<"Invoice", 'String'>
+    readonly isSigned: FieldRef<"Invoice", 'Boolean'>
+    readonly signatureDate: FieldRef<"Invoice", 'DateTime'>
   }
     
 
@@ -4296,7 +4340,11 @@ export namespace Prisma {
     status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    total: 'total'
+    total: 'total',
+    accessPasswordHash: 'accessPasswordHash',
+    signature: 'signature',
+    isSigned: 'isSigned',
+    signatureDate: 'signatureDate'
   };
 
   export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
@@ -4356,7 +4404,9 @@ export namespace Prisma {
     clientCity: 'clientCity',
     clientPostalCode: 'clientPostalCode',
     clientCountry: 'clientCountry',
-    description: 'description'
+    description: 'description',
+    accessPasswordHash: 'accessPasswordHash',
+    signature: 'signature'
   };
 
   export type InvoiceOrderByRelevanceFieldEnum = (typeof InvoiceOrderByRelevanceFieldEnum)[keyof typeof InvoiceOrderByRelevanceFieldEnum]
@@ -4408,6 +4458,13 @@ export namespace Prisma {
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
   /**
    * Deep Input Types
@@ -4504,6 +4561,10 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Invoice"> | Date | string
     updatedAt?: DateTimeFilter<"Invoice"> | Date | string
     total?: FloatNullableFilter<"Invoice"> | number | null
+    accessPasswordHash?: StringNullableFilter<"Invoice"> | string | null
+    signature?: StringNullableFilter<"Invoice"> | string | null
+    isSigned?: BoolFilter<"Invoice"> | boolean
+    signatureDate?: DateTimeNullableFilter<"Invoice"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     items?: InvoiceItemListRelationFilter
   }
@@ -4529,6 +4590,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     total?: SortOrderInput | SortOrder
+    accessPasswordHash?: SortOrderInput | SortOrder
+    signature?: SortOrderInput | SortOrder
+    isSigned?: SortOrder
+    signatureDate?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     items?: InvoiceItemOrderByRelationAggregateInput
     _relevance?: InvoiceOrderByRelevanceInput
@@ -4558,6 +4623,10 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Invoice"> | Date | string
     updatedAt?: DateTimeFilter<"Invoice"> | Date | string
     total?: FloatNullableFilter<"Invoice"> | number | null
+    accessPasswordHash?: StringNullableFilter<"Invoice"> | string | null
+    signature?: StringNullableFilter<"Invoice"> | string | null
+    isSigned?: BoolFilter<"Invoice"> | boolean
+    signatureDate?: DateTimeNullableFilter<"Invoice"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     items?: InvoiceItemListRelationFilter
   }, "id">
@@ -4583,6 +4652,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     total?: SortOrderInput | SortOrder
+    accessPasswordHash?: SortOrderInput | SortOrder
+    signature?: SortOrderInput | SortOrder
+    isSigned?: SortOrder
+    signatureDate?: SortOrderInput | SortOrder
     _count?: InvoiceCountOrderByAggregateInput
     _avg?: InvoiceAvgOrderByAggregateInput
     _max?: InvoiceMaxOrderByAggregateInput
@@ -4614,6 +4687,10 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Invoice"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Invoice"> | Date | string
     total?: FloatNullableWithAggregatesFilter<"Invoice"> | number | null
+    accessPasswordHash?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
+    signature?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
+    isSigned?: BoolWithAggregatesFilter<"Invoice"> | boolean
+    signatureDate?: DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
   }
 
   export type InvoiceItemWhereInput = {
@@ -4783,6 +4860,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     total?: number | null
+    accessPasswordHash?: string | null
+    signature?: string | null
+    isSigned?: boolean
+    signatureDate?: Date | string | null
     user: UserCreateNestedOneWithoutInvoicesInput
     items?: InvoiceItemCreateNestedManyWithoutInvoiceInput
   }
@@ -4808,6 +4889,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     total?: number | null
+    accessPasswordHash?: string | null
+    signature?: string | null
+    isSigned?: boolean
+    signatureDate?: Date | string | null
     items?: InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput
   }
 
@@ -4831,6 +4916,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     total?: NullableFloatFieldUpdateOperationsInput | number | null
+    accessPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isSigned?: BoolFieldUpdateOperationsInput | boolean
+    signatureDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutInvoicesNestedInput
     items?: InvoiceItemUpdateManyWithoutInvoiceNestedInput
   }
@@ -4856,6 +4945,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     total?: NullableFloatFieldUpdateOperationsInput | number | null
+    accessPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isSigned?: BoolFieldUpdateOperationsInput | boolean
+    signatureDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     items?: InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
   }
 
@@ -4880,6 +4973,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     total?: number | null
+    accessPasswordHash?: string | null
+    signature?: string | null
+    isSigned?: boolean
+    signatureDate?: Date | string | null
   }
 
   export type InvoiceUpdateManyMutationInput = {
@@ -4902,6 +4999,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     total?: NullableFloatFieldUpdateOperationsInput | number | null
+    accessPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isSigned?: BoolFieldUpdateOperationsInput | boolean
+    signatureDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type InvoiceUncheckedUpdateManyInput = {
@@ -4925,6 +5026,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     total?: NullableFloatFieldUpdateOperationsInput | number | null
+    accessPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isSigned?: BoolFieldUpdateOperationsInput | boolean
+    signatureDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type InvoiceItemCreateInput = {
@@ -5136,6 +5241,37 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
@@ -5183,6 +5319,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     total?: SortOrder
+    accessPasswordHash?: SortOrder
+    signature?: SortOrder
+    isSigned?: SortOrder
+    signatureDate?: SortOrder
   }
 
   export type InvoiceAvgOrderByAggregateInput = {
@@ -5211,6 +5351,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     total?: SortOrder
+    accessPasswordHash?: SortOrder
+    signature?: SortOrder
+    isSigned?: SortOrder
+    signatureDate?: SortOrder
   }
 
   export type InvoiceMinOrderByAggregateInput = {
@@ -5234,6 +5378,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     total?: SortOrder
+    accessPasswordHash?: SortOrder
+    signature?: SortOrder
+    isSigned?: SortOrder
+    signatureDate?: SortOrder
   }
 
   export type InvoiceSumOrderByAggregateInput = {
@@ -5281,6 +5429,46 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -5456,6 +5644,18 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type UserUpdateOneRequiredWithoutInvoicesNestedInput = {
     create?: XOR<UserCreateWithoutInvoicesInput, UserUncheckedCreateWithoutInvoicesInput>
     connectOrCreate?: UserCreateOrConnectWithoutInvoicesInput
@@ -5601,6 +5801,37 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -5665,6 +5896,46 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[]
@@ -5701,6 +5972,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     total?: number | null
+    accessPasswordHash?: string | null
+    signature?: string | null
+    isSigned?: boolean
+    signatureDate?: Date | string | null
     items?: InvoiceItemCreateNestedManyWithoutInvoiceInput
   }
 
@@ -5724,6 +5999,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     total?: number | null
+    accessPasswordHash?: string | null
+    signature?: string | null
+    isSigned?: boolean
+    signatureDate?: Date | string | null
     items?: InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput
   }
 
@@ -5777,6 +6056,10 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Invoice"> | Date | string
     updatedAt?: DateTimeFilter<"Invoice"> | Date | string
     total?: FloatNullableFilter<"Invoice"> | number | null
+    accessPasswordHash?: StringNullableFilter<"Invoice"> | string | null
+    signature?: StringNullableFilter<"Invoice"> | string | null
+    isSigned?: BoolFilter<"Invoice"> | boolean
+    signatureDate?: DateTimeNullableFilter<"Invoice"> | Date | string | null
   }
 
   export type UserCreateWithoutInvoicesInput = {
@@ -5915,6 +6198,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     total?: number | null
+    accessPasswordHash?: string | null
+    signature?: string | null
+    isSigned?: boolean
+    signatureDate?: Date | string | null
     user: UserCreateNestedOneWithoutInvoicesInput
   }
 
@@ -5939,6 +6226,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     total?: number | null
+    accessPasswordHash?: string | null
+    signature?: string | null
+    isSigned?: boolean
+    signatureDate?: Date | string | null
   }
 
   export type InvoiceCreateOrConnectWithoutItemsInput = {
@@ -5977,6 +6268,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     total?: NullableFloatFieldUpdateOperationsInput | number | null
+    accessPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isSigned?: BoolFieldUpdateOperationsInput | boolean
+    signatureDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutInvoicesNestedInput
   }
 
@@ -6001,6 +6296,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     total?: NullableFloatFieldUpdateOperationsInput | number | null
+    accessPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isSigned?: BoolFieldUpdateOperationsInput | boolean
+    signatureDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type InvoiceCreateManyUserInput = {
@@ -6023,6 +6322,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     total?: number | null
+    accessPasswordHash?: string | null
+    signature?: string | null
+    isSigned?: boolean
+    signatureDate?: Date | string | null
   }
 
   export type InvoiceUpdateWithoutUserInput = {
@@ -6045,6 +6348,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     total?: NullableFloatFieldUpdateOperationsInput | number | null
+    accessPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isSigned?: BoolFieldUpdateOperationsInput | boolean
+    signatureDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     items?: InvoiceItemUpdateManyWithoutInvoiceNestedInput
   }
 
@@ -6068,6 +6375,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     total?: NullableFloatFieldUpdateOperationsInput | number | null
+    accessPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isSigned?: BoolFieldUpdateOperationsInput | boolean
+    signatureDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     items?: InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
   }
 
@@ -6091,6 +6402,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     total?: NullableFloatFieldUpdateOperationsInput | number | null
+    accessPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isSigned?: BoolFieldUpdateOperationsInput | boolean
+    signatureDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type InvoiceItemCreateManyInvoiceInput = {

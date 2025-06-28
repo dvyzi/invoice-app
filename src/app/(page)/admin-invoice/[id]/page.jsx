@@ -103,39 +103,40 @@ const InvoicePage = () => {
                                 )}
                             </div>
                         </div>
-                        <div className='bg-white rounded-lg p-5 mb-20 md:p-12 my-5 flex flex-col gap-6'>
-                            <div className='flex flex-col gap-5 md:flex-row md:justify-between md:items-center'>
-                                <div className='flex flex-col gap-1 md:gap-2'>
-                                    <p className='text-heading-s text-dark-2'><span className='text-muted-dark text-heading-s'>#</span>{invoice.id.slice(0, 8).toUpperCase()}</p>
+                        <div className="bg-white rounded-lg p-6">
+                            <div className="flex flex-col md:flex-row md:justify-between gap-8 mb-8">
+                                <div className='flex flex-col gap-2'>
+                                    <p className='text-heading-s text-dark-2'>
+                                        <span className='text-primary'>#</span>
+                                        {invoice.id.substring(0, 6).toUpperCase()}
+                                    </p>
                                     <p className='text-body text-dark-gray'>{invoice.description}</p>
                                 </div>
                                 <div className='flex flex-col gap-2'>
-                                    <p className='text-dark-gray text-body'>{invoice.clientAddress}</p>
-                                    <p className='text-dark-gray text-body'>{invoice.clientCity}</p>
-                                    <p className='text-dark-gray text-body'>{invoice.clientPostalCode}</p>
-                                    <p className='text-dark-gray text-body'>{invoice.clientCountry}</p>
+                                    <p className='text-body text-dark-gray'>{invoice.address}</p>
+                                    <p className='text-body text-dark-gray'>{invoice.city}</p>
+                                    <p className='text-body text-dark-gray'>{invoice.postalCode}</p>
+                                    <p className='text-body text-dark-gray'>{invoice.country}</p>
                                 </div>
                             </div>
-                            <div className='flex items-start justify-between pr-0 md:pr-24'>
-                                <div className='flex flex-col gap-6'>
+                            <div className='grid grid-cols-1 md:grid-cols-3 gap-8 mb-8'>
+                                <div className='flex flex-col gap-8'>
                                     <div className='flex flex-col gap-2'>
-                                        <p className='text-body text-dark-gray'>Date de la facture</p>
+                                        <p className='text-body text-dark-gray'>Date de facturation</p>
                                         <p className='text-heading-s text-dark-2'>{invoice.invoiceDate}</p>
                                     </div>
                                     <div className='flex flex-col gap-2'>
-                                        <p className='text-body text-dark-gray'>Date limite de paiement</p>
+                                        <p className='text-body text-dark-gray'>Date d'échéance</p>
                                         <p className='text-heading-s text-dark-2'>{invoice.dueDate}</p>
                                     </div>
                                 </div>
-                                <div>
-                                    <div className='flex flex-col gap-2'>
-                                        <p className='text-body text-dark-gray'>Facturer à</p>
-                                        <p className='text-heading-s text-dark-2'>{invoice.clientName}</p>
-                                    </div>
-                                    <p className='text-dark-gray text-body'>{invoice.clientAddress}</p>
-                                    <p className='text-dark-gray text-body'>{invoice.clientCity}</p>
-                                    <p className='text-dark-gray text-body'>{invoice.clientPostalCode}</p>
-                                    <p className='text-dark-gray text-body'>{invoice.clientCountry}</p>
+                                <div className='flex flex-col gap-2'>
+                                    <p className='text-body text-dark-gray'>Facturé à</p>
+                                    <p className='text-heading-s text-dark-2'>{invoice.clientName}</p>
+                                    <p className='text-body text-dark-gray'>{invoice.clientAddress}</p>
+                                    <p className='text-body text-dark-gray'>{invoice.clientCity}</p>
+                                    <p className='text-body text-dark-gray'>{invoice.clientPostalCode}</p>
+                                    <p className='text-body text-dark-gray'>{invoice.clientCountry}</p>
                                 </div>
                                 <div className='hidden md:flex md:flex-col md:gap-2'>
                                     <p className='text-body text-dark-gray'>Envoyé à</p>

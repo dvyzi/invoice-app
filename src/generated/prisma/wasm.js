@@ -150,7 +150,11 @@ exports.Prisma.InvoiceScalarFieldEnum = {
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  total: 'total'
+  total: 'total',
+  accessPasswordHash: 'accessPasswordHash',
+  signature: 'signature',
+  isSigned: 'isSigned',
+  signatureDate: 'signatureDate'
 };
 
 exports.Prisma.InvoiceItemScalarFieldEnum = {
@@ -195,7 +199,9 @@ exports.Prisma.InvoiceOrderByRelevanceFieldEnum = {
   clientCity: 'clientCity',
   clientPostalCode: 'clientPostalCode',
   clientCountry: 'clientCountry',
-  description: 'description'
+  description: 'description',
+  accessPasswordHash: 'accessPasswordHash',
+  signature: 'signature'
 };
 
 exports.Prisma.InvoiceItemOrderByRelevanceFieldEnum = {

@@ -3,16 +3,28 @@
 import { User, Moon, Hourglass, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const profileMenuRef = useRef(null);
-
+    const pathname = usePathname();
+    
+    // Vérifier si nous sommes sur une page d'accès client aux factures
+    const isClientInvoicePage = /\/invoice\/[^/]+\/[^/]+/.test(pathname);
+    
     // Récupérer les informations de l'utilisateur au chargement du composant
+    // seulement si nous ne sommes pas sur une page d'accès client
     useEffect(() => {
         const fetchUserData = async () => {
+            // Ne pas récupérer les données utilisateur sur les pages d'accès client
+            if (isClientInvoicePage) {
+                setIsLoading(false);
+                return;
+            }
+            
             try {
                 const response = await fetch('/api/user');
                 if (response.ok) {
@@ -27,7 +39,7 @@ export default function Header() {
         };
         
         fetchUserData();
-    }, []);
+    }, [isClientInvoicePage, pathname]);
     
     // Fermer le menu de profil quand on clique ailleurs sur la page
     useEffect(() => {
@@ -60,6 +72,11 @@ export default function Header() {
         }
     };
 
+    // Si nous sommes sur une page d'accès client, ne pas afficher le header
+    if (isClientInvoicePage) {
+        return null;
+    }
+    
     return (
         <header className="bg-dark-1 shadow-md h-[72px] w-full md:h-20 lg:h-full lg:w-[103px] lg:rounded-tr-[20px] lg:rounded-br-[20px] fixed z-50">
             <nav className="flex justify-between lg:h-full lg:flex-col">

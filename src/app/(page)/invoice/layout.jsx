@@ -1,6 +1,6 @@
 export const metadata = {
-    title: "Facture",
-    description: "Voir la facture",
+    title: 'Factures',
+    description: 'Consultez et gérez vos factures',
 }
 
 export default function InvoiceLayout({ children }) {

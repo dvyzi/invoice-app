@@ -1,12 +1,11 @@
 export const metadata = {
-    title: 'Facture',
-    description: 'Consultez et gérez votre facture',
+    title: 'Administration',
+    description: 'Interface d\'administration des factures',
 }
 
-export default function InvoiceLayout({ children }) {
+export default function AdminInvoiceLayout({ children }) {
     return (
         <div className="space-y-6">
-            
             {/* Contenu des sous-pages */}
             <section>
                 {children}

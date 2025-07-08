@@ -59,7 +59,7 @@ export async function POST(request) {
         })
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
-        .setExpirationTime('24h') // Expire dans 24 heures
+        .setExpirationTime('2h') // Expire dans 2 heures
         .sign(new TextEncoder().encode(process.env.JWT_SECRET));
         
         // Créer une réponse avec le token dans un cookie
@@ -84,7 +84,7 @@ export async function POST(request) {
             httpOnly: true, // Le cookie ne peut pas être accédé par JavaScript
             secure: process.env.NODE_ENV === 'production', // HTTPS uniquement en production
             sameSite: 'strict',
-            maxAge: 60 * 60 * 24 // 24 heures en secondes
+            maxAge: 60 * 60 * 2 // 2 heures en secondes
         });
         
         return response;

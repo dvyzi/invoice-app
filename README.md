@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Application de Facturation
 
-## Getting Started
+## Aperçu
 
-First, run the development server:
+### Stack Technique
+- **Frontend**: Next.js, React.js, Tailwind CSS
+- **Backend**: Prisma (ORM)
+- **Base de données**: MySQL
 
+## Prérequis
+Avant d'exécuter le projet, assurez-vous d'avoir les éléments suivants installés sur votre système :
+
+- Node.js (v16 ou version ultérieure recommandée)
+- npm ou yarn (gestionnaire de paquets)
+
+## Démarrage
+
+### Étape 1 : Cloner le dépôt
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/votre-repo/invoice-app
+cd invoice-app
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Étape 2 : Installer les dépendances
+```bash
+pnpm install
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Étape 3 : Configurer les variables d'environnement
+Créez un fichier `.env` dans le répertoire racine du projet et configurez-le selon l'exemple fourni dans `.env.local`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Étape 4 : Configurer la base de données
+Le projet utilise Prisma comme ORM. Pour configurer votre base de données :
 
-## Learn More
+```bash
+npx prisma migrate dev
+# ou
+yarn prisma migrate dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Étape 5 : Lancer l'application localement
+Démarrez le serveur de développement :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+yarn dev
+# ou
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+L'application sera accessible à l'adresse [http://localhost:3000](http://localhost:3000).
 
-## Deploy on Vercel
+## Configuration de production
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Étape 1 : Construire pour la production
+Pour préparer l'application pour la production, exécutez :
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+yarn build
+# ou
+npm run build
+```
+
+### Étape 2 : Démarrer l'application en mode production
+Après avoir construit l'application, démarrez-la en mode production :
+
+```bash
+yarn start
+# ou
+npm run start
+```
+
+Le serveur de production fonctionnera sur [http://localhost:3000](http://localhost:3000) par défaut.
+
+## Fonctionnalités
+
+- Création et gestion de factures
+- Signature électronique avec SignaturePad
+- Authentification utilisateur
+- Interface utilisateur moderne avec Tailwind CSS
+
+
+## Tests
+
+Pour exécuter les tests :
+
+```bash
+yarn test
+# ou
+npm run test
+```

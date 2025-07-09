@@ -34,17 +34,13 @@ Le projet utilise Prisma comme ORM. Pour configurer votre base de données :
 
 ```bash
 npx prisma migrate dev
-# ou
-yarn prisma migrate dev
 ```
 
 ### Étape 5 : Lancer l'application localement
 Démarrez le serveur de développement :
 
 ```bash
-yarn dev
-# ou
-npm run dev
+pnpm run dev
 ```
 
 L'application sera accessible à l'adresse [http://localhost:3000](http://localhost:3000).
@@ -55,18 +51,14 @@ L'application sera accessible à l'adresse [http://localhost:3000](http://localh
 Pour préparer l'application pour la production, exécutez :
 
 ```bash
-yarn build
-# ou
-npm run build
+pnpm run build
 ```
 
 ### Étape 2 : Démarrer l'application en mode production
 Après avoir construit l'application, démarrez-la en mode production :
 
 ```bash
-yarn start
-# ou
-npm run start
+pnpm run start
 ```
 
 Le serveur de production fonctionnera sur [http://localhost:3000](http://localhost:3000) par défaut.
@@ -84,7 +76,5 @@ Le serveur de production fonctionnera sur [http://localhost:3000](http://localho
 Pour exécuter les tests :
 
 ```bash
-yarn test
-# ou
-npm run test
+pnpm run test
 ```

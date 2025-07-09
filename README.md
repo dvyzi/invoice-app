@@ -11,7 +11,7 @@
 Avant d'exécuter le projet, assurez-vous d'avoir les éléments suivants installés sur votre système :
 
 - Node.js (v16 ou version ultérieure recommandée)
-- npm ou yarn (gestionnaire de paquets)
+- pnpm (gestionnaire de paquets)
 
 ## Démarrage
 
